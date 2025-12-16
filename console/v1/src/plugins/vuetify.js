@@ -10,10 +10,24 @@ import 'vuetify/styles'
 
 // Composables
 import { createVuetify } from 'vuetify'
-
+import colors from 'vuetify/util/colors'
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   theme: {
-    defaultTheme: 'system',
+    
+
+    themes: {
+      light: {
+        dark: false,
+        colors: {
+          primary: '#FB8C00', 
+          secondary: colors.red.lighten4, // #FFCDD2
+          
+        
+        },
+      },
+    },
+   
   },
+  
 })
