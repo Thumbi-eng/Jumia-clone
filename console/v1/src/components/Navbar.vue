@@ -1,6 +1,6 @@
 <template>
-  <v-app-bar app color="white" elevation="1" style="min-height: 64px; min-width: 1220px">
-    <v-container class="pa-4 mr-8" fluid style="min-width: 1220px">
+  <v-app-bar app color="white" elevation="1" style="min-width: 1220px">
+    <v-container class="pa-2 mr-8" fluid style="min-width: 1220px">
       <v-row align="center" no-gutters class="ga-2">
         <!-- Left: logo -->
 
@@ -49,19 +49,21 @@
 
         <!-- Right: account / help / cart -->
         <v-col class="ga-3">
-          <v-btn class="ga-2 hover-primary" >
+          <v-btn class="ga-2 hover-primary">
             <v-icon size="32">mdi-account-outline</v-icon>
             Account
             <v-icon size="24">mdi-chevron-down</v-icon>
           </v-btn>
 
-          <v-btn text class="pa-1 hover-primary" >
+          <v-btn text class="pa-1 hover-primary">
             <v-icon size="26">mdi-help-circle-outline</v-icon>
-            Help 
-            <v-icon size="26">mdi-chevron-down</v-icon></v-btn>
+            Help
+            <v-icon size="26">mdi-chevron-down</v-icon></v-btn
+          >
 
-          <v-btn class="hover-primary" >
-             <v-icon size="32">mdi-cart-outline</v-icon> Cart </v-btn>
+          <v-btn class="hover-primary">
+            <v-icon size="32">mdi-cart-outline</v-icon> Cart
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -94,4 +96,3 @@ function onSearch() {
   color: rgb(var(--v-theme-primary));
 }
 </style>
-
