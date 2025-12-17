@@ -3,7 +3,7 @@
     elevation="0"
     rounded="lg"
     class="pa-6"
-    style="max-width: 1200px; margin: 0 auto"
+    style="max-width: 1550px; margin: 0 auto"
   >
     <!-- SEO H2 -->
     <h2 class="text-h6 font-weight-bold mb-4">

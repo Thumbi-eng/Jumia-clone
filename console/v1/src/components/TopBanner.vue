@@ -1,8 +1,8 @@
 <template>
   <v-row
     class="mt-5 align-stretch"
-    style="max-width: 1350px; margin: 0 auto"
-    dense
+    style="max-width: 1550px; "
+
   >
     <!-- LEFT: Categories + Hover Panel -->
     <v-col cols="12" md="2" class="px-1">
@@ -128,34 +128,78 @@
     </v-col>
 
     <!-- RIGHT: Promo cards -->
-    <v-col cols="12" md="3" class="px-1 d-flex flex-column">
-      <v-card class="pa-2 mb-2" elevation="1">
-        <v-list density="compact">
-          <v-list-item v-for="(item, i) in rightItems" :key="i">
-            <template #prepend>
-              <v-icon size="22">{{ item.icon }}</v-icon>
-            </template>
-            <v-list-item-title class="text-body-2">
-              {{ item.title }}
-            </v-list-item-title>
-            <v-list-item-subtitle class="text-caption">
-              {{ item.subtitle }}
-            </v-list-item-subtitle>
-          </v-list-item>
-        </v-list>
+    <v-col cols="12" md="3" class="px-2 d-flex flex-column">
+      <v-card class="pa-2 mb-2" 
+      elevation="1" 
+      height="220"
+      >
+      <p class='d-flex '>
+       
+        <v-btn
+        class="ma-2"
+        color="green"
+        icon="mdi-whatsapp"
+      ></v-btn>
+      <div>
+      <p class='text-h6'>Whatsapp</p>
+      <p>Text to order</p>
+      </div>
+
+      </p>
+
+       <p class='d-flex pa-1'>
+       
+        <img  src='/images/hot-deals.png' 
+            height='50'
+            class="m-0"
+            />
+      <div>
+      <p class='text-h6'>CHINA TOWN</p>
+      <p>NOW ON JUMIA</p>
+      </div>
+
+      </p>
+
+       <p class='d-flex '>
+       
+        <img  src='/images/tl-cash.png' 
+            height='50'
+            class="m-0"
+            />
+      <div>
+      <p class='text-h6'>SELL ON JUMIA</p>
+      <p>Millions Of Visitors</p>
+      </div>
+
+      </p>
+
+        
       </v-card>
 
-      <v-card class="pa-4 mt-auto bg-black text-white" elevation="1">
-        <div class="d-flex align-center">
-          <v-icon color="success" size="42" class="mr-3">
-            mdi-phone-in-talk
-          </v-icon>
-          <div class="font-weight-bold text-body-2">
-            CALL OR WHATSAPP<br />
-            <strong>0711 011 011</strong><br />
-            TO ORDER
-          </div>
-        </div>
+      <v-card 
+      class="pa-4 
+       bg-black 
+       text-white"
+        elevation="1"
+        height="220" 
+        >
+        <v-row class='d-md-flex flex-column align-center justify-center' >
+          <v-col>
+            <v-img src='/images/tl-call.png' 
+            height='80'/>
+             </v-col>
+          
+            <p class=' font-weight-bold text-h6   '>CALL OR WHATSAPP</p>
+            
+            <p class='font-weight-bold text-h4 text-primary'>0711 011 011</p>
+             
+          
+            <p class='font-weight-bold text-h4'>TO ORDER</p>
+
+          
+            
+        </v-row>
+        
       </v-card>
     </v-col>
   </v-row>
@@ -207,19 +251,19 @@ const slides = [
     title: "HOMMY\n3 Column Metallic Wardrobe",
     price: "KSHS 1,749",
     bg: "linear-gradient(90deg,#ff9f00,#ff7a00)",
-    image: "/images/slide1"
+    image: "/images/slide1.png"
   },
   {
     kicker: "",
     title: "Discover Amazing Deals",
     bg: "linear-gradient(90deg,#ddd,#bbb)",
-    image: "/images/slide2"
+    image: "/images/slide2.png"
   },
   {
     kicker: "",
     title: "Seasonal Offers",
     bg: "linear-gradient(90deg,#e8e8e8,#d0d0d0)",
-    image: "/images/slide3"
+    image: "/images/slide3.png"
   }
 ];
 
