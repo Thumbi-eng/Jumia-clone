@@ -52,65 +52,26 @@
     <!-- CENTER: Hero carousel -->
     <v-col cols="12" md="7" class="px-1">
       <v-card class="rounded overflow-hidden fill-height" elevation="0">
-        <v-carousel
-          hide-delimiter-background
-          cycle
-          height="320"
-          v-model="current"
-          show-arrows-on-hover
-        >
-          <v-carousel-item v-for="(slide, i) in slides" :key="i">
-            <div
-              class="d-flex align-center"
-              :style="{ background: slide.bg, height: '320px' }"
-            >
-              <v-row class="fill-height px-6" align="center" no-gutters>
-                <v-col cols="8">
-                  <div class="text-white">
-                    <div class="text-caption font-weight-bold">
-                      {{ slide.kicker }}
-                    </div>
+       <v-carousel
+  v-model="current"
+  cycle
+  height="460"
+  hide-delimiter-background
+  show-arrows-on-hover
+>
+  <v-carousel-item
+    v-for="(slide, i) in slides"
+    :key="i"
+  >
+    <v-img
+      :src="slide.image"
+      height="460"
+      cover
+      class="rounded"
+    />
+  </v-carousel-item>
+</v-carousel>
 
-                    <div
-                      class="text-h5 font-weight-bold mt-2"
-                      style="white-space: pre-line"
-                    >
-                      {{ slide.title }}
-                    </div>
-
-                    <v-chip
-                      v-if="slide.price"
-                      class="mt-3"
-                      color="white"
-                      text-color="#ff4b00"
-                      size="small"
-                    >
-                      {{ slide.price }}
-                    </v-chip>
-
-                    <v-btn
-                      class="mt-4"
-                      variant="text"
-                      color="white"
-                      size="small"
-                    >
-                      SHOP NOW
-                    </v-btn>
-                  </div>
-                </v-col>
-
-                <v-col cols="4" class="text-center">
-                  <v-img
-                    v-if="slide.image"
-                    :src="slide.image"
-                    max-width="170"
-                    contain
-                  />
-                </v-col>
-              </v-row>
-            </div>
-          </v-carousel-item>
-        </v-carousel>
 
         <!-- Dots -->
         <v-row class="justify-center py-2">
@@ -129,12 +90,12 @@
 
     <!-- RIGHT: Promo cards -->
     <v-col cols="12" md="3" class="px-2 d-flex flex-column">
-      <v-card class="pa-2 mb-2" 
-      elevation="1" 
-      height="220"
+      <v-card class="pa-2 mb-2"
+      elevation="1"
+      height="230"
       >
       <p class='d-flex '>
-       
+
         <v-btn
         class="ma-2"
         color="green"
@@ -148,8 +109,8 @@
       </p>
 
        <p class='d-flex pa-1'>
-       
-        <img  src='/images/hot-deals.png' 
+
+        <img  src='/images/hot-deals.png'
             height='50'
             class="m-0"
             />
@@ -161,8 +122,8 @@
       </p>
 
        <p class='d-flex '>
-       
-        <img  src='/images/tl-cash.png' 
+
+        <img  src='/images/tl-cash.png'
             height='50'
             class="m-0"
             />
@@ -173,33 +134,33 @@
 
       </p>
 
-        
+
       </v-card>
 
-      <v-card 
-      class="pa-4 
-       bg-black 
+      <v-card
+      class="pa-4
+       bg-black
        text-white"
         elevation="1"
-        height="220" 
+        height="220"
         >
         <v-row class='d-md-flex flex-column align-center justify-center' >
           <v-col>
-            <v-img src='/images/tl-call.png' 
+            <v-img src='/images/tl-call.png'
             height='80'/>
              </v-col>
-          
+
             <p class=' font-weight-bold text-h6   '>CALL OR WHATSAPP</p>
-            
+
             <p class='font-weight-bold text-h4 text-primary'>0711 011 011</p>
-             
-          
+
+
             <p class='font-weight-bold text-h4'>TO ORDER</p>
 
-          
-            
+
+
         </v-row>
-        
+
       </v-card>
     </v-col>
   </v-row>
@@ -247,31 +208,24 @@ const submenu = {
 
 const slides = [
   {
-    kicker: "KRISI NA JUMIA",
-    title: "HOMMY\n3 Column Metallic Wardrobe",
-    price: "KSHS 1,749",
-    bg: "linear-gradient(90deg,#ff9f00,#ff7a00)",
+    
     image: "/images/slide1.png"
   },
   {
-    kicker: "",
-    title: "Discover Amazing Deals",
-    bg: "linear-gradient(90deg,#ddd,#bbb)",
+ 
     image: "/images/slide2.png"
   },
   {
-    kicker: "",
-    title: "Seasonal Offers",
-    bg: "linear-gradient(90deg,#e8e8e8,#d0d0d0)",
+   
     image: "/images/slide3.png"
+  },
+   {
+    
+    image: "/images/slide2.png"
   }
 ];
 
-const rightItems = [
-  { icon: "mdi-whatsapp", title: "WhatsApp", subtitle: "Text To Order" },
-  { icon: "mdi-storefront", title: "CHINA TOWN", subtitle: "NOW ON JUMIA" },
-  { icon: "mdi-sale", title: "SELL ON JUMIA", subtitle: "Millions Of Visitors" }
-];
+
 </script>
 
 

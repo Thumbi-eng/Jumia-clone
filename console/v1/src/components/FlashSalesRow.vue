@@ -1,5 +1,8 @@
 <template>
-  <v-card class="flash-wrapper rounded-lg" elevation="0">
+  <v-card class="flash-wrapper rounded-lg"
+   elevation="0"
+   style="max-width: 1550px; min-width: 1540px; "
+>
     <!-- Header -->
     <div class="flash-header d-flex align-center justify-space-between px-4">
       <div class="d-flex align-center">
@@ -63,7 +66,7 @@
 <script setup>
 import { ref } from "vue";
 
-const timeLeft = ref("00h : 50m : 14s");
+const timeLeft = ref("01h : 50m : 14s");
 
 const items = ref([
   {
@@ -72,15 +75,15 @@ const items = ref([
     oldPrice: "1,716",
     left: 50,
     progress: 40,
-    image: "/images/products/blender.jpg",
+    image: "/images/5.jpg",
   },
   {
     title: "Nunix 100 Litres Freezer",
     price: "19,665",
     oldPrice: "22,950",
     left: 15,
-    progress: 70,
-    image: "/images/products/freezer.jpg",
+    progress: 10,
+    image: "/images/1.jpg",
   },
   {
     title: "NIVEA Nourishing Cocoa Lotion",
@@ -88,7 +91,7 @@ const items = ref([
     oldPrice: "1,280",
     left: 30,
     progress: 55,
-    image: "/images/products/nivea.jpg",
+    image: "/images/2.jpg",
   },
   {
     title: "Infinix Smart 10, 6.7\"",
@@ -96,7 +99,7 @@ const items = ref([
     oldPrice: "10,900",
     left: 50,
     progress: 35,
-    image: "/images/products/infinix.jpg",
+    image: "/images/3.jpg",
   },
   {
     title: "Vision Plus VP8843KV",
@@ -104,7 +107,7 @@ const items = ref([
     oldPrice: "35,068",
     left: 25,
     progress: 60,
-    image: "/images/products/tv.jpg",
+    image: "/images/4.jpg",
   },
   {
     title: "Poco C85, 6.9\" 128GB",
@@ -112,7 +115,7 @@ const items = ref([
     oldPrice: "15,000",
     left: 89,
     progress: 20,
-    image: "/images/products/poco.jpg",
+    image: "/images/2.jpg",
   },
 ]);
 </script>

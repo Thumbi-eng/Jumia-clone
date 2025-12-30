@@ -5,13 +5,16 @@
     </v-app-navbar>
 
     <!-- Main content would go here -->
-    <div class="mt-5 pa-4 ga-2" style="max-width: 1550px; margin: 0 auto">
+    <v-row class="mt-5 pa-4 ga-2" style="max-width: 1550px; margin: 0 auto">
+      
       <TopBanner />
-      <FlashSalesRow/>
+
+     <FlashSalesRow/>
+
       <TopDealsRow/>
       <BottomSEOSection />
 
-    </div>
+    </v-row>
 
     <!-- footer section -->
     <v-app-footer class="mt-10">
