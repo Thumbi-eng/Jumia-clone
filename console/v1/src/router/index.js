@@ -1,36 +1,104 @@
-/**
- * router/index.ts
- *
- * Automatic routes for `./src/pages/*.vue`
- */
-
-// Composables
 import { createRouter, createWebHistory } from 'vue-router'
-import { setupLayouts } from 'virtual:generated-layouts'
-import { routes } from 'vue-router/auto-routes'
+
+// Layouts
+import CustomerLayout from '@/layouts/CustomerLayout.vue'
+
+// Pages (route-level components)
+import Home from '@/views/Home.vue'
+import Cart from '@/views/Cart.vue'
+
+// Customer pages
+import AccountOverview from '@/views/customer/AccountOverview.vue'
+import Orders from '@/views/customer/Orders.vue'
+import Inbox from '@/views/customer/Inbox.vue'
+import PendingReviews from '@/views/customer/PendingReviews.vue'
+import Vouchers from '@/views/customer/Vouchers.vue'
+import Wishlist from '@/views/customer/Wishlist.vue'
+import FollowedSellers from '@/views/customer/FollowedSellers.vue'
+import RecentlyViewed from '@/views/customer/RecentlyViewed.vue'
+import AccountManagement from '@/views/customer/AccountManagement.vue'
+import PaymentSettings from '@/views/customer/PaymentSettings.vue'
+import AddressBook from '@/views/customer/AddressBook.vue'
+import NewsletterPreferences from '@/views/customer/NewsletterPreferences.vue'
+import CloseAccount from '@/views/customer/CloseAccount.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: setupLayouts(routes),
-})
-
-// Workaround for https://github.com/vitejs/vite/issues/11804
-router.onError((err, to) => {
-  if (err?.message?.includes?.('Failed to fetch dynamically imported module')) {
-    if (localStorage.getItem('vuetify:dynamic-reload')) {
-      console.error('Dynamic import error, reloading page did not fix it', err)
-    } else {
-      console.log('Reloading page to fix dynamic import error')
-      localStorage.setItem('vuetify:dynamic-reload', 'true')
-      location.assign(to.fullPath)
-    }
-  } else {
-    console.error(err)
-  }
-})
-
-router.isReady().then(() => {
-  localStorage.removeItem('vuetify:dynamic-reload')
+  routes: [
+    { path: '/', name: 'home', component: Home },
+    { path: '/cart', name: 'cart', component: Cart },
+    {
+      path: '/customer',
+      component: CustomerLayout,
+      children: [
+        {
+          path: 'account/index',
+          name: 'customer-account',
+          component: AccountOverview,
+        },
+        {
+          path: 'order/index',
+          name: 'customer-orders',
+          component: Orders,
+        },
+        {
+          path: 'inbox/index',
+          name: 'customer-inbox',
+          component: Inbox,
+        },
+        {
+          path: 'reviews/index',
+          name: 'customer-reviews',
+          component: PendingReviews,
+        },
+        {
+          path: 'vouchers/index',
+          name: 'customer-vouchers',
+          component: Vouchers,
+        },
+        {
+          path: 'wishlist/index',
+          name: 'customer-wishlist',
+          component: Wishlist,
+        },
+        {
+          path: 'followed-sellers/index',
+          name: 'customer-followed-sellers',
+          component: FollowedSellers,
+        },
+        {
+          path: 'recently-viewed/index',
+          name: 'customer-recently-viewed',
+          component: RecentlyViewed,
+        },
+        {
+          path: 'account-management/index',
+          name: 'customer-account-management',
+          component: AccountManagement,
+        },
+        {
+          path: 'payment-settings/index',
+          name: 'customer-payment-settings',
+          component: PaymentSettings,
+        },
+        {
+          path: 'address-book/index',
+          name: 'customer-address-book',
+          component: AddressBook,
+        },
+        {
+          path: 'newsletter/index',
+          name: 'customer-newsletter',
+          component: NewsletterPreferences,
+        },
+        {
+          path: 'close-account/index',
+          name: 'customer-close-account',
+          component: CloseAccount,
+        },
+      ],
+    },
+  ],
 })
 
 export default router
