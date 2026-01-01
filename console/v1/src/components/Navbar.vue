@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="white" elevation="1" style="min-width: 1220px">
+  <v-app-bar app color="white" elevation="1" style="min-width: 1220px" class="mb-3">
     <v-container class="pa-2 mr-8" fluid style="min-width: 1220px">
       <v-row align="center" no-gutters class="ga-2">
         <!-- Left: logo -->
@@ -122,9 +122,10 @@
           <v-btn class="hover-primary" :to="{ name: 'cart' }">
             <v-badge
               :content="cartItemCount"
-              color="orange"
+              color="orange darken-1 text-white"
               offset-x="5"
               offset-y="5"
+
             >
               <v-icon size="32">mdi-cart-outline</v-icon>
             </v-badge>

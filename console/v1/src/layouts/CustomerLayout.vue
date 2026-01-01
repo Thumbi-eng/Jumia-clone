@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid class="pa-0 bg-grey-lighten-4">
-    <v-row class="ma-0" style="max-width: 1550px; margin: 0 auto !important">
+  <v-container fluid class="pa-6 bg-grey-lighten-4 mt-6">
+    <v-row class="mt-6" style="max-width: 1550px; margin: 2px auto !important">
       <!-- Sidebar Navigation -->
       <v-col cols="12" md="3" class="pa-4">
         <v-card elevation="0" class="pa-0">
