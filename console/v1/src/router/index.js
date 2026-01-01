@@ -6,6 +6,7 @@ import CustomerLayout from '@/layouts/CustomerLayout.vue'
 // Pages (route-level components)
 import Home from '@/views/Home.vue'
 import Cart from '@/views/Cart.vue'
+import Checkout from '@/views/Checkout.vue'
 
 // Customer pages
 import AccountOverview from '@/views/customer/AccountOverview.vue'
@@ -27,6 +28,7 @@ const router = createRouter({
   routes: [
     { path: '/', name: 'home', component: Home },
     { path: '/cart', name: 'cart', component: Cart },
+    { path: '/checkout/summary', name: 'checkout', component: Checkout },
     {
       path: '/customer',
       component: CustomerLayout,

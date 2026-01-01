@@ -159,6 +159,9 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const cartItems = ref([
   {
@@ -225,7 +228,7 @@ const removeItem = (index) => {
 };
 
 const checkout = () => {
-  console.log("Proceeding to checkout with total:", subtotal.value);
+  router.push({ name: "checkout" });
 };
 </script>
 
