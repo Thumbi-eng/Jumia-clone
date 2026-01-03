@@ -7,4 +7,5 @@ use (
 	./services/user-service
 	./services/product-service
 	./services/cart-service
+	./services/order-service
 )

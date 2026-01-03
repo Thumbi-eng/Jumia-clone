@@ -2,48 +2,103 @@ syntax = "proto3";
 
 package order;
 
+option go_package = "jumia-clone-backend/services/order-service/proto";
+
 service OrderService {
     rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
     rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
     rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
+    rpc UpdateOrderStatus(UpdateOrderStatusRequest) returns (UpdateOrderStatusResponse);
+    rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse);
 }
 
+// Create Order
 message CreateOrderRequest {
     string user_id = 1;
-    repeated OrderItem items = 2;
+    repeated OrderItemInput items = 2;
+    string shipping_address = 3;
+    string payment_method = 4;
 }
 
 message CreateOrderResponse {
-    string order_id = 1;
-    string status = 2;
+    bool success = 1;
+    string message = 2;
+    OrderData order = 3;
 }
 
+// Get Order
 message GetOrderRequest {
     string order_id = 1;
 }
 
 message GetOrderResponse {
-    string order_id = 1;
-    string user_id = 2;
-    repeated OrderItem items = 3;
-    string status = 4;
+    bool success = 1;
+    string message = 2;
+    OrderData order = 3;
 }
 
+// List Orders
 message ListOrdersRequest {
     string user_id = 1;
+    int32 page = 2;
+    int32 page_size = 3;
 }
 
 message ListOrdersResponse {
-    repeated Order order_list = 1;
+    bool success = 1;
+    string message = 2;
+    repeated OrderData orders = 3;
+    int32 total = 4;
 }
 
-message Order {
+// Update Order Status
+message UpdateOrderStatusRequest {
     string order_id = 1;
-    repeated OrderItem items = 2;
-    string status = 3;
+    string status = 2;
 }
 
-message OrderItem {
+message UpdateOrderStatusResponse {
+    bool success = 1;
+    string message = 2;
+    OrderData order = 3;
+}
+
+// Cancel Order
+message CancelOrderRequest {
+    string order_id = 1;
+    string user_id = 2;
+}
+
+message CancelOrderResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+// Data Models
+message OrderData {
+    string id = 1;
+    string user_id = 2;
+    repeated OrderItemData items = 3;
+    string status = 4;
+    double total_price = 5;
+    string shipping_address = 6;
+    string payment_method = 7;
+    string created_at = 8;
+    string updated_at = 9;
+}
+
+message OrderItemData {
+    string id = 1;
+    string product_id = 2;
+    string product_name = 3;
+    int32 quantity = 4;
+    double price = 5;
+    double subtotal = 6;
+}
+
+message OrderItemInput {
     string product_id = 1;
-    int32 quantity = 2;
+    string product_name = 2;
+    int32 quantity = 3;
+    double price = 4;
 }
