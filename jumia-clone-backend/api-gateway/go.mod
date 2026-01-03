@@ -1,6 +1,10 @@
 module jumia-clone-backend/api-gateway
 
-go 1.21
+go 1.24.0
+
+toolchain go1.24.9
+
+replace google.golang.org/genproto => google.golang.org/genproto v0.0.0-20251222181119-0a764e51fe1b
 
 require (
 	github.com/gin-contrib/cors v1.4.0

@@ -14,6 +14,9 @@ import (
 func main() {
 	// Get configuration from environment
 	userServiceAddr := getEnv("USER_SERVICE_ADDR", "localhost:50051")
+	productServiceAddr := getEnv("PRODUCT_SERVICE_ADDR", "localhost:50052")
+	cartServiceAddr := getEnv("CART_SERVICE_ADDR", "localhost:50053")
+	orderServiceAddr := getEnv("ORDER_SERVICE_ADDR", "localhost:50054")
 	port := getEnv("PORT", "8080")
 
 	// Connect to user service
@@ -22,6 +25,27 @@ func main() {
 		log.Fatalf("Failed to connect to user service: %v", err)
 	}
 	defer userClient.Close()
+
+	// Connect to product service
+	productClient, err := client.NewProductServiceClient(productServiceAddr)
+	if err != nil {
+		log.Fatalf("Failed to connect to product service: %v", err)
+	}
+	defer productClient.Close()
+
+	// Connect to cart service
+	cartClient, err := client.NewCartServiceClient(cartServiceAddr)
+	if err != nil {
+		log.Fatalf("Failed to connect to cart service: %v", err)
+	}
+	defer cartClient.Close()
+
+	// Connect to order service
+	orderClient, err := client.NewOrderServiceClient(orderServiceAddr)
+	if err != nil {
+		log.Fatalf("Failed to connect to order service: %v", err)
+	}
+	defer orderClient.Close()
 
 	// Create Gin router
 	router := gin.Default()
@@ -35,11 +59,17 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	// Register routes
-	handler.RegisterRoutes(router, userClient.Conn)
+	// Register routes for all services
+	handler.RegisterAllRoutes(router, userClient.Conn, productClient.Conn, cartClient.Conn, orderClient.Conn)
 
 	// Start HTTP server
 	log.Printf("API Gateway starting on port %s...", port)
+	log.Printf("Connected to services:")
+	log.Printf("  - User Service: %s", userServiceAddr)
+	log.Printf("  - Product Service: %s", productServiceAddr)
+	log.Printf("  - Cart Service: %s", cartServiceAddr)
+	log.Printf("  - Order Service: %s", orderServiceAddr)
+
 	if err := router.Run(":" + port); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
