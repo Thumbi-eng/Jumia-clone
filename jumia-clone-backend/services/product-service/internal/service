@@ -1,0 +1,47 @@
+package service
+
+import (
+    "context"
+    "errors"
+    "github.com/yourusername/jumia-clone-backend/services/product-service/internal/repository"
+    "github.com/yourusername/jumia-clone-backend/services/product-service/proto"
+)
+
+type ProductService struct {
+    repo repository.ProductRepository
+}
+
+func NewProductService(repo repository.ProductRepository) *ProductService {
+    return &ProductService{repo: repo}
+}
+
+func (s *ProductService) CreateProduct(ctx context.Context, req *proto.CreateProductRequest) (*proto.CreateProductResponse, error) {
+    if req.GetName() == "" || req.GetPrice() <= 0 {
+        return nil, errors.New("invalid product data")
+    }
+
+    product, err := s.repo.Create(req)
+    if err != nil {
+        return nil, err
+    }
+
+    return &proto.CreateProductResponse{Product: product}, nil
+}
+
+func (s *ProductService) GetProduct(ctx context.Context, req *proto.GetProductRequest) (*proto.GetProductResponse, error) {
+    product, err := s.repo.GetByID(req.GetId())
+    if err != nil {
+        return nil, err
+    }
+
+    return &proto.GetProductResponse{Product: product}, nil
+}
+
+func (s *ProductService) ListProducts(ctx context.Context, req *proto.ListProductsRequest) (*proto.ListProductsResponse, error) {
+    products, err := s.repo.List(req.GetPage(), req.GetPageSize())
+    if err != nil {
+        return nil, err
+    }
+
+    return &proto.ListProductsResponse{Products: products}, nil
+}

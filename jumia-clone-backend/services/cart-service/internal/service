@@ -1,0 +1,65 @@
+package service
+
+import (
+	"context"
+	"errors"
+)
+
+type CartItem struct {
+	ProductID string
+	Quantity  int32
+}
+
+type Cart struct {
+	UserID    string
+	Items     []CartItem
+}
+
+type CartService struct {
+	carts map[string]Cart
+}
+
+func NewCartService() *CartService {
+	return &CartService{
+		carts: make(map[string]Cart),
+	}
+}
+
+func (s *CartService) AddToCart(ctx context.Context, userID string, item CartItem) error {
+	if item.Quantity <= 0 {
+		return errors.New("quantity must be greater than zero")
+	}
+
+	cart, exists := s.carts[userID]
+	if !exists {
+		cart = Cart{UserID: userID, Items: []CartItem{}}
+	}
+
+	cart.Items = append(cart.Items, item)
+	s.carts[userID] = cart
+	return nil
+}
+
+func (s *CartService) GetCart(ctx context.Context, userID string) (Cart, error) {
+	cart, exists := s.carts[userID]
+	if !exists {
+		return Cart{}, errors.New("cart not found")
+	}
+	return cart, nil
+}
+
+func (s *CartService) RemoveFromCart(ctx context.Context, userID string, productID string) error {
+	cart, exists := s.carts[userID]
+	if !exists {
+		return errors.New("cart not found")
+	}
+
+	for i, item := range cart.Items {
+		if item.ProductID == productID {
+			cart.Items = append(cart.Items[:i], cart.Items[i+1:]...)
+			s.carts[userID] = cart
+			return nil
+		}
+	}
+	return errors.New("item not found in cart")
+}

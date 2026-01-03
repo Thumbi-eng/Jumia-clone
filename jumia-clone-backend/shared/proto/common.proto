@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package common;
+
+option go_package = "shared/proto;common";
+
+// Common response message
+message Response {
+    bool success = 1;
+    string message = 2;
+}
+
+// Common error message
+message Error {
+    string code = 1;
+    string message = 2;
+}
+
+// Common pagination message
+message Pagination {
+    int32 page = 1;
+    int32 page_size = 2;
+    int32 total = 3;
+}

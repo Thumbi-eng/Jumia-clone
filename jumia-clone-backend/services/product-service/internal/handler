@@ -1,0 +1,35 @@
+package handler
+
+import (
+	"context"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc"
+)
+
+type ProductHandler struct {
+	grpcClient ProductServiceClient
+}
+
+func NewProductHandler(conn *grpc.ClientConn) *ProductHandler {
+	return &ProductHandler{
+		grpcClient: NewProductServiceClient(conn),
+	}
+}
+
+func (h *ProductHandler) GetProduct(c *gin.Context) {
+	// Implementation for getting a product
+}
+
+func (h *ProductHandler) CreateProduct(c *gin.Context) {
+	// Implementation for creating a product
+}
+
+func (h *ProductHandler) UpdateProduct(c *gin.Context) {
+	// Implementation for updating a product
+}
+
+func (h *ProductHandler) DeleteProduct(c *gin.Context) {
+	// Implementation for deleting a product
+}
