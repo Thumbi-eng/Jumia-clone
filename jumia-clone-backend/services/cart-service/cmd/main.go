@@ -1,28 +1,51 @@
 package main
 
 import (
-    "log"
-    "net"
+	"log"
+	"net"
 
-    "google.golang.org/grpc"
-    pb "path/to/your/proto/cart" // Update with the correct import path for your cart.proto
+	"google.golang.org/grpc"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+
+	"jumia-clone-backend/services/cart-service/internal/handler"
+	"jumia-clone-backend/services/cart-service/internal/models"
+	"jumia-clone-backend/services/cart-service/internal/repository"
+	"jumia-clone-backend/services/cart-service/internal/service"
+	pb "jumia-clone-backend/services/cart-service/proto"
 )
 
 func main() {
-    // Set up a listener on the specified port
-    lis, err := net.Listen("tcp", ":50051") // Change the port as needed
-    if err != nil {
-        log.Fatalf("failed to listen: %v", err)
-    }
+	// Database connection
+	dsn := "host=localhost user=postgres password=postgres dbname=jumia_carts port=5432 sslmode=disable"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
 
-    // Create a new gRPC server
-    s := grpc.NewServer()
+	// Auto-migrate the schema
+	if err := db.AutoMigrate(&models.Cart{}, &models.CartItem{}); err != nil {
+		log.Fatalf("Failed to migrate database: %v", err)
+	}
 
-    // Register your service handlers here
-    // pb.RegisterCartServiceServer(s, &yourCartServiceImplementation{}) // Uncomment and implement your service
+	log.Println("Database connected and migrated successfully")
 
-    log.Println("Cart service is running on port 50051...")
-    if err := s.Serve(lis); err != nil {
-        log.Fatalf("failed to serve: %v", err)
-    }
+	// Initialize layers
+	cartRepo := repository.NewCartRepository(db)
+	cartService := service.NewCartService(cartRepo)
+	cartHandler := handler.NewCartHandler(cartService)
+
+	// Set up gRPC server
+	lis, err := net.Listen("tcp", ":50053")
+	if err != nil {
+		log.Fatalf("Failed to listen: %v", err)
+	}
+
+	s := grpc.NewServer()
+	pb.RegisterCartServiceServer(s, cartHandler)
+
+	log.Println("Cart service is running on port 50053...")
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("Failed to serve: %v", err)
+	}
 }

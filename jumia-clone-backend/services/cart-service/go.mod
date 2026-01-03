@@ -1,8 +1,30 @@
-module github.com/thumbi-eng/jumia-clone-backend/cart-service
+module jumia-clone-backend/services/cart-service
 
-go 1.18
+go 1.24.0
+
+toolchain go1.24.9
+
+replace google.golang.org/genproto => google.golang.org/genproto v0.0.0-20251222181119-0a764e51fe1b
 
 require (
-    google.golang.org/grpc v1.42.0
-    google.golang.org/protobuf v1.26.0
+	google.golang.org/grpc v1.58.0
+	google.golang.org/protobuf v1.31.0
+	gorm.io/driver/postgres v1.6.0
+	gorm.io/gorm v1.31.1
+)
+
+require (
+	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/jackc/pgpassfile v1.0.0 // indirect
+	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
+	github.com/jackc/pgx/v5 v5.6.0 // indirect
+	github.com/jackc/puddle/v2 v2.2.2 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
+	golang.org/x/crypto v0.31.0 // indirect
+	golang.org/x/net v0.21.0 // indirect
+	golang.org/x/sync v0.10.0 // indirect
+	golang.org/x/sys v0.28.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230711160842-782d3b101e98 // indirect
 )
