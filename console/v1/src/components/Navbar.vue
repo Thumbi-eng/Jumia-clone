@@ -1,5 +1,11 @@
 <template>
-  <v-app-bar app color="white" elevation="1" style="min-width: 1220px" class="mb-3">
+  <v-app-bar
+    app
+    color="white"
+    elevation="1"
+    style="min-width: 1220px"
+    class="mb-3"
+  >
     <v-container class="pa-2 mr-8" fluid style="min-width: 1220px">
       <v-row align="center" no-gutters class="ga-2">
         <!-- Left: logo -->
@@ -10,6 +16,7 @@
           style="object-fit: contain"
           class=""
           height="100"
+          @click="$router.push({ name: 'home' })"
         />
 
         <!-- Center: search -->
@@ -33,7 +40,7 @@
               prepend-inner-icon="mdi-magnify"
               color="grey-darken-3"
               style="flex: 1 1 auto; background: white"
-              @click:append-inner="onSearch"
+              @keyup.enter="onSearch"
             />
             <v-btn
               color="orange darken-1"
@@ -125,7 +132,6 @@
               color="orange darken-1 text-white"
               offset-x="5"
               offset-y="5"
-
             >
               <v-icon size="32">mdi-cart-outline</v-icon>
             </v-badge>
@@ -140,7 +146,9 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const query = ref("");
 const display = useDisplay();
 const cartItemCount = ref(4); // This will be dynamic later when connected to a store
@@ -149,9 +157,15 @@ const logoMaxWidth = computed(() => (display.mdAndDown.value ? 110 : 140));
 const searchMaxWidth = computed(() => (display.mdAndDown.value ? 420 : 700));
 
 function onSearch() {
-  // simple behavior: navigate to search or console log for now
-  // This can be replaced with proper search routing later
-  console.log("Search:", query.value);
+  if (!query.value || query.value.trim() === "") {
+    return;
+  }
+
+  // Navigate to search results page with query parameter
+  router.push({
+    name: "search",
+    query: { q: query.value.trim() },
+  });
 }
 
 const menuItems = [
