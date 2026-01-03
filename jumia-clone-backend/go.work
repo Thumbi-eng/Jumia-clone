@@ -5,4 +5,5 @@ toolchain go1.24.9
 use (
 	./api-gateway
 	./services/user-service
+	./services/product-service
 )
