@@ -8,6 +8,8 @@ import Home from '@/views/Home.vue'
 import Cart from '@/views/Cart.vue'
 import Checkout from '@/views/Checkout.vue'
 import SearchResults from '@/views/SearchResults.vue'
+import Login from '@/views/Login.vue'
+import Register from '@/views/Register.vue'
 
 // Customer pages
 import AccountOverview from '@/views/customer/AccountOverview.vue'
@@ -29,6 +31,8 @@ const router = createRouter({
   routes: [
     { path: '/', name: 'home', component: Home },
     { path: '/search', name: 'search', component: SearchResults },
+    { path: '/login', name: 'login', component: Login },
+    { path: '/register', name: 'register', component: Register },
     { path: '/cart', name: 'cart', component: Cart },
     { path: '/checkout/summary', name: 'checkout', component: Checkout },
     {

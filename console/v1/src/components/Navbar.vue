@@ -61,7 +61,9 @@
             Account
             <v-icon size="24">mdi-chevron-down</v-icon>
           </v-btn> -->
+          <!-- Logged In User Menu -->
           <v-menu
+            v-if="authStore.isAuthenticated"
             location="bottom end"
             offset="8"
             transition="scale-transition"
@@ -69,7 +71,7 @@
             <template #activator="{ props }">
               <v-btn v-bind="props" class="ga-2 hover-primary" variant="text">
                 <v-icon size="32">mdi-account-outline</v-icon>
-                Account
+                Hi, {{ authStore.user?.first_name || "User" }}
                 <v-icon size="24">mdi-chevron-down</v-icon>
               </v-btn>
             </template>
@@ -79,14 +81,17 @@
               <!-- Header -->
               <v-list-item class="py-3">
                 <template #prepend>
-                  <v-avatar color="grey-lighten-3">
-                    <v-icon>mdi-account</v-icon>
+                  <v-avatar color="orange-lighten-4">
+                    <v-icon color="orange">mdi-account</v-icon>
                   </v-avatar>
                 </template>
 
                 <v-list-item-title class="font-weight-medium">
-                  Hi, victor
+                  {{ authStore.fullName }}
                 </v-list-item-title>
+                <v-list-item-subtitle class="text-caption">
+                  {{ authStore.user?.email }}
+                </v-list-item-subtitle>
               </v-list-item>
 
               <v-divider />
@@ -112,13 +117,27 @@
               <v-divider />
 
               <!-- Logout -->
-              <v-list-item class="text-center logout-item" @click="logout">
+              <v-list-item
+                class="text-center logout-item"
+                @click="handleLogout"
+              >
                 <v-list-item-title class="text-orange font-weight-medium">
                   Logout
                 </v-list-item-title>
               </v-list-item>
             </v-card>
           </v-menu>
+
+          <!-- Not Logged In - Login Button -->
+          <v-btn
+            v-else
+            class="ga-2 hover-primary"
+            variant="text"
+            @click="$router.push('/login')"
+          >
+            <v-icon size="32">mdi-account-outline</v-icon>
+            Sign In
+          </v-btn>
 
           <v-btn text class="pa-1 hover-primary">
             <v-icon size="26">mdi-help-circle-outline</v-icon>
@@ -147,8 +166,10 @@
 import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
 
 const router = useRouter();
+const authStore = useAuthStore();
 const query = ref("");
 const display = useDisplay();
 const cartItemCount = ref(4); // This will be dynamic later when connected to a store
@@ -188,10 +209,10 @@ const menuItems = [
   },
 ];
 
-const logout = () => {
-  // Supabase / Auth logout here
-  console.log("Logged out");
-};
+function handleLogout() {
+  authStore.logout();
+  router.push("/login");
+}
 </script>
 
 <style scoped>
