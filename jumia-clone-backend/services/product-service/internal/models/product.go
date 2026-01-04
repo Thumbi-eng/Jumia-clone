@@ -22,6 +22,9 @@ type Product struct {
 	FlashSalePrice     float64        `gorm:"type:decimal(10,2);default:0" json:"flash_sale_price"`
 	FlashSaleEndTime   *time.Time     `gorm:"type:timestamp" json:"flash_sale_end_time"`
 	InitialStock       int            `gorm:"default:0" json:"initial_stock"`
+	IsTopDeal          bool           `gorm:"default:false;index" json:"is_top_deal"`
+	DealType           string         `gorm:"type:varchar(50)" json:"deal_type"` // e.g., "top_deal", "clearance", "hot_deal"
+	DealPriority       int            `gorm:"default:0" json:"deal_priority"`    // For ordering deals
 	CreatedAt          time.Time      `json:"created_at"`
 	UpdatedAt          time.Time      `json:"updated_at"`
 	DeletedAt          gorm.DeletedAt `gorm:"index" json:"-"`

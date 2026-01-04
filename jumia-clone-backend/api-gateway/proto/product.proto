@@ -13,6 +13,8 @@ service ProductService {
     rpc SearchProducts(SearchProductsRequest) returns (SearchProductsResponse);
     rpc GetProductsByCategory(GetProductsByCategoryRequest) returns (GetProductsByCategoryResponse);
     rpc GetFlashSaleProducts(GetFlashSaleProductsRequest) returns (GetFlashSaleProductsResponse);
+    rpc GetTopDeals(GetTopDealsRequest) returns (GetTopDealsResponse);
+    rpc GetDealsByType(GetDealsByTypeRequest) returns (GetDealsByTypeResponse);
 }
 
 // Create Product
@@ -29,6 +31,9 @@ message CreateProductRequest {
     double flash_sale_price = 10;
     string flash_sale_end_time = 11;
     int32 initial_stock = 12;
+    bool is_top_deal = 13;
+    string deal_type = 14;
+    int32 deal_priority = 15;
 }
 
 message CreateProductResponse {
@@ -63,6 +68,9 @@ message UpdateProductRequest {
     double flash_sale_price = 11;
     string flash_sale_end_time = 12;
     int32 initial_stock = 13;
+    bool is_top_deal = 14;
+    string deal_type = 15;
+    int32 deal_priority = 16;
 }
 
 message UpdateProductResponse {
@@ -135,6 +143,33 @@ message GetFlashSaleProductsResponse {
     string message = 4;
 }
 
+// Get Top Deals
+message GetTopDealsRequest {
+    int32 page = 1;
+    int32 page_size = 2;
+}
+
+message GetTopDealsResponse {
+    repeated ProductData products = 1;
+    int32 total = 2;
+    bool success = 3;
+    string message = 4;
+}
+
+// Get Deals By Type
+message GetDealsByTypeRequest {
+    string deal_type = 1;
+    int32 page = 2;
+    int32 page_size = 3;
+}
+
+message GetDealsByTypeResponse {
+    repeated ProductData products = 1;
+    int32 total = 2;
+    bool success = 3;
+    string message = 4;
+}
+
 // Product Data
 message ProductData {
     string id = 1;
@@ -156,4 +191,7 @@ message ProductData {
     int32 initial_stock = 17;
     int32 flash_sale_progress = 18;
     bool is_flash_sale_active = 19;
+    bool is_top_deal = 20;
+    string deal_type = 21;
+    int32 deal_priority = 22;
 }

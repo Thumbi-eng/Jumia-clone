@@ -15,6 +15,7 @@ import Register from '@/views/Register.vue'
 import AddProducts from '@/views/admin/AddProducts.vue'
 import ProductsList from '@/views/admin/ProductsList.vue'
 import FlashSales from '@/views/admin/FlashSales.vue'
+import TopDeals from '@/views/admin/TopDeals.vue'
 
 // Customer pages
 import AccountOverview from '@/views/customer/AccountOverview.vue'
@@ -43,6 +44,7 @@ const router = createRouter({
     { path: '/admin/products', name: 'admin-products-list', component: ProductsList },
     { path: '/admin/products/add', name: 'admin-products-add', component: AddProducts },
     { path: '/admin/flash-sales', name: 'admin-flash-sales', component: FlashSales },
+    { path: '/admin/top-deals', name: 'admin-top-deals', component: TopDeals },
 
     { path: '/cart', name: 'cart', component: Cart },
     { path: '/checkout/summary', name: 'checkout', component: Checkout },

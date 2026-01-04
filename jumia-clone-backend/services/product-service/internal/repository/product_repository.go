@@ -18,6 +18,8 @@ type ProductRepository interface {
 	Search(query string, page, pageSize int) ([]*models.Product, int64, error)
 	GetByCategory(category string, page, pageSize int) ([]*models.Product, int64, error)
 	GetFlashSaleProducts(page, pageSize int) ([]*models.Product, int64, error)
+	GetTopDeals(page, pageSize int) ([]*models.Product, int64, error)
+	GetDealsByType(dealType string, page, pageSize int) ([]*models.Product, int64, error)
 }
 
 type productRepository struct {
@@ -147,6 +149,54 @@ func (r *productRepository) GetFlashSaleProducts(page, pageSize int) ([]*models.
 		Offset(offset).
 		Limit(pageSize).
 		Order("flash_sale_end_time ASC").
+		Find(&products).Error
+
+	return products, total, err
+}
+
+// GetTopDeals retrieves products marked as top deals
+func (r *productRepository) GetTopDeals(page, pageSize int) ([]*models.Product, int64, error) {
+	var products []*models.Product
+	var total int64
+
+	offset := (page - 1) * pageSize
+
+	// Count total
+	if err := r.db.Model(&models.Product{}).
+		Where("is_active = ? AND is_top_deal = ?", true, true).
+		Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	// Get paginated results - order by priority then created date
+	err := r.db.Where("is_active = ? AND is_top_deal = ?", true, true).
+		Offset(offset).
+		Limit(pageSize).
+		Order("deal_priority DESC, created_at DESC").
+		Find(&products).Error
+
+	return products, total, err
+}
+
+// GetDealsByType retrieves products by deal type
+func (r *productRepository) GetDealsByType(dealType string, page, pageSize int) ([]*models.Product, int64, error) {
+	var products []*models.Product
+	var total int64
+
+	offset := (page - 1) * pageSize
+
+	// Count total
+	if err := r.db.Model(&models.Product{}).
+		Where("is_active = ? AND is_top_deal = ? AND deal_type = ?", true, true, dealType).
+		Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	// Get paginated results
+	err := r.db.Where("is_active = ? AND is_top_deal = ? AND deal_type = ?", true, true, dealType).
+		Offset(offset).
+		Limit(pageSize).
+		Order("deal_priority DESC, created_at DESC").
 		Find(&products).Error
 
 	return products, total, err

@@ -39,6 +39,8 @@ func RegisterAllRoutes(router *gin.Engine, userConn, productConn, cartConn, orde
 			products.GET("", productHandler.ListProducts)
 			products.GET("/search", productHandler.SearchProducts)
 			products.GET("/category", productHandler.GetProductsByCategory)
+			products.GET("/top-deals", productHandler.GetTopDeals)
+			products.GET("/deals", productHandler.GetDealsByType)
 			products.GET("/:id", productHandler.GetProduct)
 			products.PUT("/:id", productHandler.UpdateProduct)
 			products.DELETE("/:id", productHandler.DeleteProduct)

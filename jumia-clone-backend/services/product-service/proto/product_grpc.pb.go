@@ -26,6 +26,9 @@ const (
 	ProductService_ListProducts_FullMethodName          = "/product.ProductService/ListProducts"
 	ProductService_SearchProducts_FullMethodName        = "/product.ProductService/SearchProducts"
 	ProductService_GetProductsByCategory_FullMethodName = "/product.ProductService/GetProductsByCategory"
+	ProductService_GetFlashSaleProducts_FullMethodName  = "/product.ProductService/GetFlashSaleProducts"
+	ProductService_GetTopDeals_FullMethodName           = "/product.ProductService/GetTopDeals"
+	ProductService_GetDealsByType_FullMethodName        = "/product.ProductService/GetDealsByType"
 )
 
 // ProductServiceClient is the client API for ProductService service.
@@ -39,6 +42,9 @@ type ProductServiceClient interface {
 	ListProducts(ctx context.Context, in *ListProductsRequest, opts ...grpc.CallOption) (*ListProductsResponse, error)
 	SearchProducts(ctx context.Context, in *SearchProductsRequest, opts ...grpc.CallOption) (*SearchProductsResponse, error)
 	GetProductsByCategory(ctx context.Context, in *GetProductsByCategoryRequest, opts ...grpc.CallOption) (*GetProductsByCategoryResponse, error)
+	GetFlashSaleProducts(ctx context.Context, in *GetFlashSaleProductsRequest, opts ...grpc.CallOption) (*GetFlashSaleProductsResponse, error)
+	GetTopDeals(ctx context.Context, in *GetTopDealsRequest, opts ...grpc.CallOption) (*GetTopDealsResponse, error)
+	GetDealsByType(ctx context.Context, in *GetDealsByTypeRequest, opts ...grpc.CallOption) (*GetDealsByTypeResponse, error)
 }
 
 type productServiceClient struct {
@@ -119,6 +125,36 @@ func (c *productServiceClient) GetProductsByCategory(ctx context.Context, in *Ge
 	return out, nil
 }
 
+func (c *productServiceClient) GetFlashSaleProducts(ctx context.Context, in *GetFlashSaleProductsRequest, opts ...grpc.CallOption) (*GetFlashSaleProductsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetFlashSaleProductsResponse)
+	err := c.cc.Invoke(ctx, ProductService_GetFlashSaleProducts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productServiceClient) GetTopDeals(ctx context.Context, in *GetTopDealsRequest, opts ...grpc.CallOption) (*GetTopDealsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetTopDealsResponse)
+	err := c.cc.Invoke(ctx, ProductService_GetTopDeals_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productServiceClient) GetDealsByType(ctx context.Context, in *GetDealsByTypeRequest, opts ...grpc.CallOption) (*GetDealsByTypeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetDealsByTypeResponse)
+	err := c.cc.Invoke(ctx, ProductService_GetDealsByType_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductServiceServer is the server API for ProductService service.
 // All implementations must embed UnimplementedProductServiceServer
 // for forward compatibility.
@@ -130,6 +166,9 @@ type ProductServiceServer interface {
 	ListProducts(context.Context, *ListProductsRequest) (*ListProductsResponse, error)
 	SearchProducts(context.Context, *SearchProductsRequest) (*SearchProductsResponse, error)
 	GetProductsByCategory(context.Context, *GetProductsByCategoryRequest) (*GetProductsByCategoryResponse, error)
+	GetFlashSaleProducts(context.Context, *GetFlashSaleProductsRequest) (*GetFlashSaleProductsResponse, error)
+	GetTopDeals(context.Context, *GetTopDealsRequest) (*GetTopDealsResponse, error)
+	GetDealsByType(context.Context, *GetDealsByTypeRequest) (*GetDealsByTypeResponse, error)
 	mustEmbedUnimplementedProductServiceServer()
 }
 
@@ -160,6 +199,15 @@ func (UnimplementedProductServiceServer) SearchProducts(context.Context, *Search
 }
 func (UnimplementedProductServiceServer) GetProductsByCategory(context.Context, *GetProductsByCategoryRequest) (*GetProductsByCategoryResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetProductsByCategory not implemented")
+}
+func (UnimplementedProductServiceServer) GetFlashSaleProducts(context.Context, *GetFlashSaleProductsRequest) (*GetFlashSaleProductsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetFlashSaleProducts not implemented")
+}
+func (UnimplementedProductServiceServer) GetTopDeals(context.Context, *GetTopDealsRequest) (*GetTopDealsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTopDeals not implemented")
+}
+func (UnimplementedProductServiceServer) GetDealsByType(context.Context, *GetDealsByTypeRequest) (*GetDealsByTypeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetDealsByType not implemented")
 }
 func (UnimplementedProductServiceServer) mustEmbedUnimplementedProductServiceServer() {}
 func (UnimplementedProductServiceServer) testEmbeddedByValue()                        {}
@@ -308,6 +356,60 @@ func _ProductService_GetProductsByCategory_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProductService_GetFlashSaleProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFlashSaleProductsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).GetFlashSaleProducts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProductService_GetFlashSaleProducts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).GetFlashSaleProducts(ctx, req.(*GetFlashSaleProductsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProductService_GetTopDeals_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTopDealsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).GetTopDeals(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProductService_GetTopDeals_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).GetTopDeals(ctx, req.(*GetTopDealsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProductService_GetDealsByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDealsByTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).GetDealsByType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProductService_GetDealsByType_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).GetDealsByType(ctx, req.(*GetDealsByTypeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProductService_ServiceDesc is the grpc.ServiceDesc for ProductService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -342,6 +444,18 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProductsByCategory",
 			Handler:    _ProductService_GetProductsByCategory_Handler,
+		},
+		{
+			MethodName: "GetFlashSaleProducts",
+			Handler:    _ProductService_GetFlashSaleProducts_Handler,
+		},
+		{
+			MethodName: "GetTopDeals",
+			Handler:    _ProductService_GetTopDeals_Handler,
+		},
+		{
+			MethodName: "GetDealsByType",
+			Handler:    _ProductService_GetDealsByType_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
