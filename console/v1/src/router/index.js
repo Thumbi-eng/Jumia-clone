@@ -11,6 +11,10 @@ import SearchResults from '@/views/SearchResults.vue'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 
+// Admin pages
+import AddProducts from '@/views/admin/AddProducts.vue'
+import ProductsList from '@/views/admin/ProductsList.vue'
+
 // Customer pages
 import AccountOverview from '@/views/customer/AccountOverview.vue'
 import Orders from '@/views/customer/Orders.vue'
@@ -33,6 +37,11 @@ const router = createRouter({
     { path: '/search', name: 'search', component: SearchResults },
     { path: '/login', name: 'login', component: Login },
     { path: '/register', name: 'register', component: Register },
+
+    // Admin routes
+    { path: '/admin/products', name: 'admin-products-list', component: ProductsList },
+    { path: '/admin/products/add', name: 'admin-products-add', component: AddProducts },
+
     { path: '/cart', name: 'cart', component: Cart },
     { path: '/checkout/summary', name: 'checkout', component: Checkout },
     {
