@@ -17,6 +17,7 @@ type ProductRepository interface {
 	List(page, pageSize int) ([]*models.Product, int64, error)
 	Search(query string, page, pageSize int) ([]*models.Product, int64, error)
 	GetByCategory(category string, page, pageSize int) ([]*models.Product, int64, error)
+	GetFlashSaleProducts(page, pageSize int) ([]*models.Product, int64, error)
 }
 
 type productRepository struct {
@@ -122,6 +123,30 @@ func (r *productRepository) GetByCategory(category string, page, pageSize int) (
 		Offset(offset).
 		Limit(pageSize).
 		Order("created_at DESC").
+		Find(&products).Error
+
+	return products, total, err
+}
+
+// GetFlashSaleProducts retrieves active flash sale products
+func (r *productRepository) GetFlashSaleProducts(page, pageSize int) ([]*models.Product, int64, error) {
+	var products []*models.Product
+	var total int64
+
+	offset := (page - 1) * pageSize
+
+	// Count total - only active flash sales
+	if err := r.db.Model(&models.Product{}).
+		Where("is_active = ? AND is_flash_sale = ? AND flash_sale_end_time > NOW()", true, true).
+		Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	// Get paginated results - order by flash sale end time (ending soon first)
+	err := r.db.Where("is_active = ? AND is_flash_sale = ? AND flash_sale_end_time > NOW()", true, true).
+		Offset(offset).
+		Limit(pageSize).
+		Order("flash_sale_end_time ASC").
 		Find(&products).Error
 
 	return products, total, err
