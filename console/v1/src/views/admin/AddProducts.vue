@@ -138,17 +138,88 @@
               />
             </v-col>
 
-            <!-- Image URL -->
+            <!-- Image Upload -->
             <v-col cols="12">
-              <v-text-field
-                v-model="productData.image_url"
-                label="Image URL"
-                variant="outlined"
-                prepend-inner-icon="mdi-image-outline"
-                :disabled="loading"
-                hint="Enter the URL of the product image"
-                persistent-hint
-              />
+              <v-card variant="outlined" class="pa-4">
+                <div class="text-subtitle-2 mb-3 d-flex align-center">
+                  <v-icon class="mr-2">mdi-image-outline</v-icon>
+                  Product Image
+                </div>
+
+                <!-- Image Preview -->
+                <div v-if="imagePreview || productData.image_url" class="mb-4">
+                  <v-img
+                    :src="imagePreview || productData.image_url"
+                    max-height="300"
+                    max-width="400"
+                    class="rounded"
+                    cover
+                  />
+                  <v-btn
+                    v-if="imagePreview"
+                    color="red"
+                    variant="text"
+                    size="small"
+                    class="mt-2"
+                    @click="removeImage"
+                  >
+                    Remove Image
+                  </v-btn>
+                </div>
+
+                <!-- Upload Button -->
+                <v-file-input
+                  v-model="imageFile"
+                  label="Upload Product Image"
+                  variant="outlined"
+                  prepend-icon=""
+                  prepend-inner-icon="mdi-camera"
+                  accept="image/jpeg,image/jpg,image/png,image/webp"
+                  :disabled="loading || uploading"
+                  :loading="uploading"
+                  show-size
+                  @change="handleImageSelect"
+                >
+                  <template #append>
+                    <v-btn
+                      v-if="imageFile"
+                      color="orange"
+                      variant="flat"
+                      :loading="uploading"
+                      @click="uploadImage"
+                    >
+                      Upload
+                    </v-btn>
+                  </template>
+                </v-file-input>
+
+                <!-- Upload Progress -->
+                <v-progress-linear
+                  v-if="uploading"
+                  :model-value="uploadProgress"
+                  color="orange"
+                  height="6"
+                  class="mt-2"
+                />
+
+                <div class="text-caption text-grey-darken-1 mt-2">
+                  Supported formats: JPEG, PNG, WebP (Max 5MB)
+                </div>
+
+                <!-- Or use URL -->
+                <v-divider class="my-4" />
+                <div class="text-caption text-grey-darken-1 mb-2">
+                  Or provide image URL:
+                </div>
+                <v-text-field
+                  v-model="productData.image_url"
+                  variant="outlined"
+                  density="compact"
+                  placeholder="https://example.com/image.jpg"
+                  :disabled="loading || uploading || !!imageFile"
+                  hide-details
+                />
+              </v-card>
             </v-col>
 
             <!-- Description -->
@@ -440,6 +511,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
+import { uploadProductImage, deleteProductImage } from "@/utils/storage";
 
 const API_BASE = "http://localhost:8080/api/v1";
 
@@ -457,6 +529,12 @@ const deleteDialog = ref(false);
 const editDialog = ref(false);
 const productToDelete = ref(null);
 const products = ref([]);
+
+// Image Upload State
+const imageFile = ref(null);
+const imagePreview = ref("");
+const uploading = ref(false);
+const uploadProgress = ref(0);
 
 // Form Data
 const productData = reactive({
@@ -570,12 +648,22 @@ async function handleAddProduct() {
   successMessage.value = "";
 
   try {
+    // Use uploaded image URL if available, otherwise use manual URL
+    const imageUrl = imagePreview.value || productData.image_url;
+
+    if (!imageUrl) {
+      throw new Error("Please upload an image or provide an image URL");
+    }
+
     const response = await fetch(`${API_BASE}/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(productData),
+      body: JSON.stringify({
+        ...productData,
+        image_url: imageUrl,
+      }),
     });
 
     if (!response.ok) {
@@ -617,6 +705,88 @@ function resetForm() {
   productData.image_url = "";
   productData.brand = "";
   productData.discount_percentage = 0;
+
+  // Reset image upload state
+  imageFile.value = null;
+  imagePreview.value = "";
+  uploadProgress.value = 0;
+}
+
+// Image Upload Handlers
+function handleImageSelect(file) {
+  if (!file) {
+    removeImage();
+    return;
+  }
+
+  // Validate file type
+  const validTypes = ["image/jpeg", "image/png", "image/webp"];
+  if (!validTypes.includes(file.type)) {
+    error.value = "Please select a valid image file (JPEG, PNG, or WebP)";
+    return;
+  }
+
+  // Validate file size (5MB max)
+  const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+  if (file.size > maxSize) {
+    error.value = "Image size must be less than 5MB";
+    return;
+  }
+
+  imageFile.value = file;
+  error.value = "";
+
+  // Create preview
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    imagePreview.value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadImage() {
+  if (!imageFile.value) {
+    error.value = "Please select an image to upload";
+    return;
+  }
+
+  uploading.value = true;
+  uploadProgress.value = 0;
+  error.value = "";
+
+  try {
+    const downloadURL = await uploadProductImage(
+      imageFile.value,
+      null, // productId (optional, will generate unique name)
+      (progress) => {
+        uploadProgress.value = progress;
+      }
+    );
+
+    imagePreview.value = downloadURL;
+    productData.image_url = downloadURL;
+    successMessage.value = "Image uploaded successfully!";
+
+    // Clear file input after successful upload
+    imageFile.value = null;
+
+    setTimeout(() => {
+      successMessage.value = "";
+    }, 3000);
+  } catch (err) {
+    error.value = err.message || "Failed to upload image";
+    console.error("Error uploading image:", err);
+  } finally {
+    uploading.value = false;
+    uploadProgress.value = 0;
+  }
+}
+
+function removeImage() {
+  imageFile.value = null;
+  imagePreview.value = "";
+  uploadProgress.value = 0;
+  productData.image_url = "";
 }
 
 // Edit Product

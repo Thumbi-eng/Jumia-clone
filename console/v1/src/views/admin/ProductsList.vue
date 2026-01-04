@@ -1,9 +1,9 @@
 <template>
-  <v-container fluid class="pa-6">
+  <v-container fluid class="pa-6 mt-7 ">
     <v-row>
       <v-col cols="12">
         <!-- Header -->
-        <div class="d-flex justify-space-between align-center mb-6">
+        <div class="d-flex justify-space-between align-center mb-6 mt-4">
           <div>
             <h1 class="text-h4 font-weight-bold">Products Management</h1>
             <p class="text-body-2 text-grey-darken-1 mt-1">
