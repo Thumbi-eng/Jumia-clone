@@ -4,7 +4,21 @@
     class="pa-6 mt-6 bg-grey-lighten-4"
     style="max-width: 1550px"
   >
-    <v-row>
+    <!-- Empty Cart State -->
+    <v-row v-if="cartStore.cartItems.length === 0">
+      <v-col cols="12">
+        <v-card elevation="0" class="text-center pa-8">
+          <v-icon size="80" color="grey-lighten-1">mdi-cart-outline</v-icon>
+          <h2 class="text-h5 mt-4 mb-2">Your cart is empty</h2>
+          <p class="text-grey mb-4">Add items before checking out</p>
+          <v-btn color="orange" variant="flat" to="/">
+            Continue Shopping
+          </v-btn>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row v-else>
       <!-- Left: Checkout Details -->
       <v-col cols="12" md="8">
         <!-- 1. Customer Address -->
@@ -85,13 +99,13 @@
               </v-col>
             </v-row>
 
-            <!-- Shipment 1/3 -->
+            <!-- Order Items -->
             <v-card variant="outlined" class="mb-3">
               <v-card-text class="pa-3">
                 <v-row align="center" class="mb-2">
                   <v-col>
                     <span class="text-body-2 font-weight-medium"
-                      >Shipment 1/3</span
+                      >Order Items ({{ cartStore.cartCount }})</span
                     >
                   </v-col>
                   <v-col cols="auto">
@@ -106,7 +120,8 @@
                     Pick-up Station
                   </div>
                   <div class="text-body-2 text-grey mb-2">
-                    Delivery between 05 January and 06 January
+                    Delivery between {{ deliveryStartDate }} and
+                    {{ deliveryEndDate }}
                   </div>
                   <v-img
                     src="/Jumia-Logo.jpg"
@@ -117,14 +132,16 @@
                 </div>
 
                 <v-row
-                  v-for="item in shipment1"
-                  :key="item.name"
+                  v-for="item in cartStore.cartItems"
+                  :key="item.id"
                   align="center"
                   class="mb-2"
                 >
                   <v-col cols="auto">
                     <v-img
-                      :src="item.image"
+                      :src="
+                        item.image_url || '/images/products/placeholder.jpg'
+                      "
                       width="60"
                       height="60"
                       cover
@@ -135,109 +152,8 @@
                     <div class="text-body-2">x{{ item.quantity }}</div>
                     <div class="text-body-2">{{ item.name }}</div>
                     <div class="text-body-1 font-weight-medium">
-                      KSh {{ item.price.toLocaleString() }}
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-
-            <!-- Shipment 2/3 -->
-            <v-card variant="outlined" class="mb-3">
-              <v-card-text class="pa-3">
-                <v-row align="center" class="mb-2">
-                  <v-col>
-                    <span class="text-body-2 font-weight-medium"
-                      >Shipment 2/3</span
-                    >
-                  </v-col>
-                  <v-col cols="auto">
-                    <span class="text-body-2 text-grey">
-                      Fulfilled by Elvis & Ken Computer Store
-                    </span>
-                  </v-col>
-                </v-row>
-
-                <div class="bg-grey-lighten-4 pa-3 rounded mb-3">
-                  <div class="text-body-2 font-weight-medium mb-1">
-                    Pick-up Station
-                  </div>
-                  <div class="text-body-2 text-grey">
-                    Delivery between 07 January and 08 January
-                  </div>
-                </div>
-
-                <v-row
-                  v-for="item in shipment2"
-                  :key="item.name"
-                  align="center"
-                  class="mb-2"
-                >
-                  <v-col cols="auto">
-                    <v-img
-                      :src="item.image"
-                      width="60"
-                      height="60"
-                      cover
-                      class="rounded"
-                    ></v-img>
-                  </v-col>
-                  <v-col>
-                    <div class="text-body-2">x{{ item.quantity }}</div>
-                    <div class="text-body-2">{{ item.name }}</div>
-                    <div class="text-body-1 font-weight-medium">
-                      KSh {{ item.price.toLocaleString() }}
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-
-            <!-- Shipment 3/3 -->
-            <v-card variant="outlined" class="mb-3">
-              <v-card-text class="pa-3">
-                <v-row align="center" class="mb-2">
-                  <v-col>
-                    <span class="text-body-2 font-weight-medium"
-                      >Shipment 3/3</span
-                    >
-                  </v-col>
-                  <v-col cols="auto">
-                    <span class="text-body-2 text-grey">
-                      Fulfilled by Mult station gym shop
-                    </span>
-                  </v-col>
-                </v-row>
-
-                <div class="bg-grey-lighten-4 pa-3 rounded mb-3">
-                  <div class="text-body-2 font-weight-medium mb-1">
-                    Pick-up Station
-                  </div>
-                  <div class="text-body-2 text-grey">
-                    Delivery between 07 January and 08 January
-                  </div>
-                </div>
-
-                <v-row
-                  v-for="item in shipment3"
-                  :key="item.name"
-                  align="center"
-                  class="mb-2"
-                >
-                  <v-col cols="auto">
-                    <v-img
-                      :src="item.image"
-                      width="60"
-                      height="60"
-                      cover
-                      class="rounded"
-                    ></v-img>
-                  </v-col>
-                  <v-col>
-                    <div class="text-body-2">x{{ item.quantity }}</div>
-                    <div class="text-body-2">{{ item.name }}</div>
-                    <div class="text-body-1 font-weight-medium">
-                      KSh {{ item.price.toLocaleString() }}
+                      KSh
+                      {{ (item.final_price * item.quantity).toLocaleString() }}
                     </div>
                   </v-col>
                 </v-row>
@@ -523,11 +439,13 @@
             <!-- Items Total -->
             <v-row align="center" class="mb-2">
               <v-col>
-                <span class="text-body-2">Item's total ({{ totalItems }})</span>
+                <span class="text-body-2"
+                  >Item's total ({{ cartStore.cartCount }})</span
+                >
               </v-col>
               <v-col cols="auto">
                 <span class="text-body-1"
-                  >KSh {{ itemsTotal.toLocaleString() }}</span
+                  >KSh {{ cartStore.cartTotal.toLocaleString() }}</span
                 >
               </v-col>
             </v-row>
@@ -553,7 +471,7 @@
               </v-col>
               <v-col cols="auto">
                 <span class="text-h6 font-weight-bold">
-                  KSh {{ total.toLocaleString() }}
+                  KSh {{ orderTotal.toLocaleString() }}
                 </span>
               </v-col>
             </v-row>
@@ -590,6 +508,8 @@
               block
               size="large"
               class="text-white font-weight-medium mb-3"
+              :disabled="!selectedPaymentMethod || orderProcessing"
+              :loading="orderProcessing"
               @click="confirmOrder"
             >
               CONFIRM ORDER
@@ -626,20 +546,53 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Success Snackbar -->
+    <v-snackbar v-model="snackbar.show" :color="snackbar.color">
+      {{ snackbar.message }}
+      <template v-slot:actions>
+        <v-btn variant="text" @click="snackbar.show = false">Close</v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useCartStore } from "@/stores/cart";
+import { useAuthStore } from "@/stores/auth";
 
 const router = useRouter();
+const cartStore = useCartStore();
+const authStore = useAuthStore();
+
 const promoCode = ref("");
 const showPaymentSelection = ref(false);
 const tempPaymentMethod = ref("");
 const selectedPaymentMethod = ref(null);
 const paymentUnavailable = ref(true);
+const orderProcessing = ref(false);
+const deliveryFees = ref(170);
 
+const snackbar = ref({
+  show: false,
+  message: "",
+  color: "success",
+});
+
+// Delivery dates
+const deliveryStartDate = computed(() => {
+  const date = new Date();
+  date.setDate(date.getDate() + 1); // Tomorrow
+  return date.toLocaleDateString("en-US", { day: "numeric", month: "long" });
+});
+
+const deliveryEndDate = computed(() => {
+  const date = new Date();
+  date.setDate(date.getDate() + 4); // 4 days from now
+  return date.toLocaleDateString("en-US", { day: "numeric", month: "long" });
+});
 // Payment methods mapping
 const paymentMethods = {
   "bank-card": {
@@ -665,58 +618,50 @@ const paymentMethods = {
   },
 };
 
-// Shipment data
-const shipment1 = ref([
-  {
-    name: "ELPF901K 5.1CH Home Theater ...",
-    image: "/images/1.jpg",
-    price: 11649,
-    quantity: 1,
-  },
-  {
-    name: "50Q6500H, ...",
-    image: "/images/5.jpg",
-    price: 41499,
-    quantity: 1,
-  },
-]);
+// Computed values
+const orderTotal = computed(() => cartStore.cartTotal + deliveryFees.value);
 
-const shipment2 = ref([
-  {
-    name: "NB-F160 Dual Monitor Desk Mou...",
-    image: "/images/2.jpg",
-    price: 11500,
-    quantity: 1,
-  },
-]);
+const confirmOrder = async () => {
+  if (!selectedPaymentMethod.value) {
+    showSnackbar("Please select a payment method", "error");
+    return;
+  }
 
-const shipment3 = ref([
-  {
-    name: "12kg Dumbbell Set",
-    image: "/images/3.jpg",
-    price: 3199,
-    quantity: 1,
-  },
-]);
+  if (!authStore.isAuthenticated) {
+    showSnackbar("Please login to continue", "error");
+    router.push("/login");
+    return;
+  }
 
-// Order summary calculations
-const itemsTotal = ref(67847);
-const deliveryFees = ref(1420);
+  orderProcessing.value = true;
 
-const total = computed(() => itemsTotal.value + deliveryFees.value);
-const totalItems = computed(() => {
-  return (
-    shipment1.value.length + shipment2.value.length + shipment3.value.length
-  );
-});
+  try {
+    // Simulate order creation (replace with actual API call)
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-const confirmOrder = () => {
-  console.log("Order confirmed!");
-  // Navigate to order confirmation page
+    showSnackbar("Order placed successfully!", "success");
+
+    // Clear cart
+    cartStore.clearCart();
+
+    // Navigate to orders page
+    setTimeout(() => {
+      router.push("/customer/order/index");
+    }, 1500);
+  } catch (error) {
+    console.error("Order error:", error);
+    showSnackbar("Failed to place order. Please try again.", "error");
+  } finally {
+    orderProcessing.value = false;
+  }
 };
 
 const applyPromo = () => {
-  console.log("Applying promo code:", promoCode.value);
+  if (!promoCode.value.trim()) {
+    showSnackbar("Please enter a promo code", "warning");
+    return;
+  }
+  showSnackbar("Promo code feature coming soon!", "info");
 };
 
 const modifyCart = () => {
@@ -742,6 +687,24 @@ const confirmPaymentMethod = () => {
     showPaymentSelection.value = false;
   }
 };
+
+const showSnackbar = (message, color = "success") => {
+  snackbar.value = {
+    show: true,
+    message,
+    color,
+  };
+};
+
+onMounted(() => {
+  // Redirect if cart is empty
+  if (cartStore.cartItems.length === 0) {
+    showSnackbar("Your cart is empty", "info");
+    setTimeout(() => {
+      router.push("/");
+    }, 1500);
+  }
+});
 </script>
 
 <style scoped>

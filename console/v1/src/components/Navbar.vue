@@ -147,10 +147,11 @@
 
           <v-btn class="hover-primary" :to="{ name: 'cart' }">
             <v-badge
-              :content="cartItemCount"
+              :content="cartStore.cartCount"
               color="orange darken-1 text-white"
               offset-x="5"
               offset-y="5"
+              :model-value="cartStore.cartCount > 0"
             >
               <v-icon size="32">mdi-cart-outline</v-icon>
             </v-badge>
@@ -167,12 +168,13 @@ import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { useCartStore } from "@/stores/cart";
 
 const router = useRouter();
 const authStore = useAuthStore();
+const cartStore = useCartStore();
 const query = ref("");
 const display = useDisplay();
-const cartItemCount = ref(4); // This will be dynamic later when connected to a store
 
 const logoMaxWidth = computed(() => (display.mdAndDown.value ? 110 : 140));
 const searchMaxWidth = computed(() => (display.mdAndDown.value ? 420 : 700));

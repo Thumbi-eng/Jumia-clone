@@ -61,7 +61,13 @@
     </div>
 
     <div v-else class="flash-products d-flex px-3 py-4">
-      <div v-for="item in items" :key="item.id" class="flash-item mr-3">
+      <div
+        v-for="item in items"
+        :key="item.id"
+        class="flash-item mr-3"
+        style="cursor: pointer"
+        @click="goToProduct(item.id)"
+      >
         <v-img :src="item.image" aspect-ratio="1" cover class="rounded mb-2" />
 
         <div class="text-body-2 truncate">
@@ -96,8 +102,10 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
 
 const API_BASE = "http://localhost:8080/api/v1";
+const router = useRouter();
 
 const authStore = useAuthStore();
 const loading = ref(false);
@@ -226,6 +234,10 @@ function formatPrice(price) {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   });
+}
+
+function goToProduct(productId) {
+  router.push(`/product/${productId}`);
 }
 </script>
 

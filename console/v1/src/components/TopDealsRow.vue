@@ -9,7 +9,7 @@
     >
       <div
         class="d-flex align-center justify-space-between px-4"
-        style="height: 48px; background: #d32f2f; min-width: 1540px;"
+        style="height: 48px; background: #d32f2f; min-width: 1540px"
       >
         <div class="font-weight-bold text-white">🔥 Hot Deals</div>
         <v-btn variant="text" color="white" size="small" class="text-none">
@@ -22,7 +22,7 @@
           v-for="deal in dealsByType.hot_deal"
           :key="deal.id"
           elevation="0"
-          class="pa-2 mr-2 mb-2"
+          class="pa-2 mr-2 mb-2 product-card"
           style="width: 180px; cursor: pointer"
           @click="goToProduct(deal.id)"
         >
@@ -85,7 +85,7 @@
           v-for="deal in dealsByType.clearance"
           :key="deal.id"
           elevation="0"
-          class="pa-2 mr-2 mb-2"
+          class="pa-2 mr-2 mb-2 product-card"
           style="width: 180px; cursor: pointer"
           @click="goToProduct(deal.id)"
         >
@@ -148,7 +148,7 @@
           v-for="deal in dealsByType.limited_offer"
           :key="deal.id"
           elevation="0"
-          class="pa-2 mr-2 mb-2"
+          class="pa-2 mr-2 mb-2 product-card"
           style="width: 180px; cursor: pointer"
           @click="goToProduct(deal.id)"
         >
@@ -213,7 +213,7 @@
           v-for="deal in dealsByType.top_deal"
           :key="deal.id"
           elevation="0"
-          class="pa-2 mr-2 mb-2"
+          class="pa-2 mr-2 mb-2 product-card"
           style="width: 180px; cursor: pointer"
           @click="goToProduct(deal.id)"
         >
@@ -334,12 +334,28 @@ const loadTopDeals = async () => {
 };
 
 const goToProduct = (productId) => {
-  // Navigate to product detail page
-  // router.push(`/product/${productId}`)
-  console.log("Navigate to product:", productId);
+  router.push(`/product/${productId}`);
 };
 
 onMounted(() => {
   loadTopDeals();
 });
 </script>
+
+<style scoped>
+.product-card {
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.product-card:active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(14, 13, 13, 0.1);
+}
+</style>
