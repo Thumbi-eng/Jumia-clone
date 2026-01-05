@@ -103,7 +103,7 @@
                 variant="text"
                 color="orange"
                 size="small"
-                @click="$router.push('/forgot-password')"
+                @click="forgotPasswordDialog = true"
               >
                 Forgot Password?
               </v-btn>
@@ -153,6 +153,76 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Forgot Password Dialog -->
+    <v-dialog v-model="forgotPasswordDialog" max-width="500" persistent>
+      <v-card>
+        <v-card-title class="text-h5 font-weight-bold pa-6">
+          Reset Password
+        </v-card-title>
+
+        <v-card-text class="px-6">
+          <v-alert
+            v-if="resetSuccess"
+            type="success"
+            variant="tonal"
+            class="mb-4"
+          >
+            Password reset email sent! Check your inbox.
+          </v-alert>
+
+          <v-alert
+            v-if="resetError"
+            type="error"
+            variant="tonal"
+            class="mb-4"
+            closable
+            @click:close="resetError = null"
+          >
+            {{ resetError }}
+          </v-alert>
+
+          <p class="text-body-2 text-grey-darken-1 mb-4">
+            Enter your email address and we'll send you a link to reset your
+            password.
+          </p>
+
+          <v-form ref="resetForm" @submit.prevent="handleResetPassword">
+            <v-text-field
+              v-model="resetEmail"
+              label="Email Address"
+              type="email"
+              variant="outlined"
+              prepend-inner-icon="mdi-email-outline"
+              :rules="emailRules"
+              :disabled="resetLoading || resetSuccess"
+              required
+              autofocus
+            />
+          </v-form>
+        </v-card-text>
+
+        <v-card-actions class="px-6 pb-6">
+          <v-spacer />
+          <v-btn
+            variant="text"
+            @click="closeForgotPasswordDialog"
+            :disabled="resetLoading"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="orange"
+            variant="flat"
+            :loading="resetLoading"
+            :disabled="resetSuccess"
+            @click="handleResetPassword"
+          >
+            {{ resetSuccess ? 'Email Sent' : 'Send Reset Link' }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -160,6 +230,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -169,6 +240,14 @@ const email = ref("");
 const password = ref("");
 const showPassword = ref(false);
 const rememberMe = ref(false);
+
+// Forgot password
+const forgotPasswordDialog = ref(false);
+const resetForm = ref(null);
+const resetEmail = ref("");
+const resetLoading = ref(false);
+const resetSuccess = ref(false);
+const resetError = ref(null);
 
 const emailRules = [
   (v) => !!v || "Email is required",
@@ -196,6 +275,59 @@ async function handleLogin() {
   } catch (err) {
     // Error is handled in the store and displayed in the alert
     console.error("Login failed:", err);
+  }
+}
+
+async function handleResetPassword() {
+  const { valid } = await resetForm.value.validate();
+
+  if (!valid) {
+    return;
+  }
+
+  resetLoading.value = true;
+  resetError.value = null;
+  resetSuccess.value = false;
+
+  try {
+    const auth = getAuth();
+    await sendPasswordResetEmail(auth, resetEmail.value);
+    resetSuccess.value = true;
+
+    // Close dialog after 3 seconds
+    setTimeout(() => {
+      closeForgotPasswordDialog();
+    }, 3000);
+  } catch (err) {
+    console.error("Password reset error:", err);
+
+    // Handle Firebase errors
+    switch (err.code) {
+      case "auth/user-not-found":
+        resetError.value = "No account found with this email address.";
+        break;
+      case "auth/invalid-email":
+        resetError.value = "Invalid email address.";
+        break;
+      case "auth/too-many-requests":
+        resetError.value =
+          "Too many requests. Please try again later.";
+        break;
+      default:
+        resetError.value = err.message || "Failed to send reset email.";
+    }
+  } finally {
+    resetLoading.value = false;
+  }
+}
+
+function closeForgotPasswordDialog() {
+  forgotPasswordDialog.value = false;
+  resetEmail.value = "";
+  resetSuccess.value = false;
+  resetError.value = null;
+  if (resetForm.value) {
+    resetForm.value.resetValidation();
   }
 }
 </script>

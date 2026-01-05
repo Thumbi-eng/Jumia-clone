@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getStorage } from 'firebase/storage'
+import { getAuth } from 'firebase/auth'
 
 // Your Firebase configuration
 // Get these from Firebase Console > Project Settings > General > Your apps > SDK setup and configuration
@@ -18,4 +19,7 @@ const app = initializeApp(firebaseConfig)
 // Initialize Firebase Storage
 const storage = getStorage(app)
 
-export { storage }
+// Initialize Firebase Auth
+const auth = getAuth(app)
+
+export { storage, auth }
