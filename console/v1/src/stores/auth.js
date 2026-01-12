@@ -13,6 +13,18 @@ export const useAuthStore = defineStore('auth', () => {
 
   // Computed
   const isAuthenticated = computed(() => !!accessToken.value && !!user.value)
+  const isAdmin = computed(() => {
+    if (!user.value) return false
+    // Check if user has admin role from backend
+    if (user.value.role === 'admin' || user.value.is_admin === true) {
+      return true
+    }
+    // Temporary: Hardcoded admin email for development
+    if (user.value.email === 'mustangmerchants@gmail.com') {
+      return true
+    }
+    return false
+  })
   const fullName = computed(() => {
     if (!user.value) return ''
     return `${user.value.first_name} ${user.value.last_name}`
@@ -247,6 +259,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     // Computed
     isAuthenticated,
+    isAdmin,
     fullName,
 
     // Actions

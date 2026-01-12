@@ -98,6 +98,25 @@
 
               <!-- Menu Items -->
               <v-list density="compact" nav>
+                <!-- Admin Link (if user is admin) -->
+                <v-list-item
+                  v-if="authStore.isAdmin"
+                  :to="{ name: 'admin-dashboard' }"
+                  link
+                  class="bg-orange-lighten-5"
+                >
+                  <template #prepend>
+                    <v-icon color="orange">mdi-shield-crown</v-icon>
+                  </template>
+
+                  <v-list-item-title class="text-orange font-weight-medium">
+                    Admin Dashboard
+                  </v-list-item-title>
+                </v-list-item>
+
+                <v-divider v-if="authStore.isAdmin" class="my-1" />
+
+                <!-- Customer Menu Items -->
                 <v-list-item
                   v-for="item in menuItems"
                   :key="item.title"

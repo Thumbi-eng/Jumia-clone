@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 // Layouts
 import CustomerLayout from '@/layouts/CustomerLayout.vue'
+import AdminLayout from '@/layouts/AdminLayout.vue'
 
 // Pages (route-level components)
 import Home from '@/views/Home.vue'
@@ -13,10 +14,16 @@ import Register from '@/views/Register.vue'
 import ProductDetail from '@/views/ProductDetail.vue'
 
 // Admin pages
+import Dashboard from '@/views/admin/Dashboard.vue'
 import AddProducts from '@/views/admin/AddProducts.vue'
 import ProductsList from '@/views/admin/ProductsList.vue'
 import FlashSales from '@/views/admin/FlashSales.vue'
 import TopDeals from '@/views/admin/TopDeals.vue'
+import AdminOrders from '@/views/admin/Orders.vue'
+import Customers from '@/views/admin/Customers.vue'
+import Categories from '@/views/admin/Categories.vue'
+import Analytics from '@/views/admin/Analytics.vue'
+import Settings from '@/views/admin/Settings.vue'
 
 // Customer pages
 import AccountOverview from '@/views/customer/AccountOverview.vue'
@@ -42,11 +49,63 @@ const router = createRouter({
     { path: '/login', name: 'login', component: Login },
     { path: '/register', name: 'register', component: Register },
 
-    // Admin routes
-    { path: '/admin/products', name: 'admin-products-list', component: ProductsList },
-    { path: '/admin/products/add', name: 'admin-products-add', component: AddProducts },
-    { path: '/admin/flash-sales', name: 'admin-flash-sales', component: FlashSales },
-    { path: '/admin/top-deals', name: 'admin-top-deals', component: TopDeals },
+    // Admin routes with layout
+    {
+      path: '/admin',
+      component: AdminLayout,
+      children: [
+        {
+          path: 'dashboard',
+          name: 'admin-dashboard',
+          component: Dashboard,
+        },
+        {
+          path: 'products',
+          name: 'admin-products-list',
+          component: ProductsList,
+        },
+        {
+          path: 'products/add',
+          name: 'admin-products-add',
+          component: AddProducts,
+        },
+        {
+          path: 'flash-sales',
+          name: 'admin-flash-sales',
+          component: FlashSales,
+        },
+        {
+          path: 'top-deals',
+          name: 'admin-top-deals',
+          component: TopDeals,
+        },
+        {
+          path: 'orders',
+          name: 'admin-orders',
+          component: AdminOrders,
+        },
+        {
+          path: 'customers',
+          name: 'admin-customers',
+          component: Customers,
+        },
+        {
+          path: 'categories',
+          name: 'admin-categories',
+          component: Categories,
+        },
+        {
+          path: 'analytics',
+          name: 'admin-analytics',
+          component: Analytics,
+        },
+        {
+          path: 'settings',
+          name: 'admin-settings',
+          component: Settings,
+        },
+      ],
+    },
 
     { path: '/cart', name: 'cart', component: Cart },
     { path: '/checkout/summary', name: 'checkout', component: Checkout },
