@@ -1,0 +1,2 @@
+psql 'postgresql://neondb_owner:npg_vQLlMm9NfO0B@ep-shy-night-ah3khakr-pooler.c-3.us-east-1.aws.neon.tech/jumia_users?sslmode=require&channel_binding=require'
+psql 'postgresql://neondb_owner:npg_vQLlMm9NfO0B@ep-shy-night-ah3khakr-pooler.c-3.us-east-1.aws.neon.tech/jumia_products?sslmode=require&channel_binding=require'

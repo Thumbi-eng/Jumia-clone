@@ -1,0 +1,424 @@
+Deployment completed at: Mon Jan 12 05:15:50 PM EAT 2026
+Project: roversellers
+Region: us-central1
+
+Service URLs:
+- User Service: [1;33m📦 Building and deploying user-service...[0m
+---------------------------- REMOTE BUILD OUTPUT -----------------------------
+starting build "ab0743e3-9760-45ec-a5ad-01093ede08d5"
+
+FETCHSOURCE
+Fetching storage object: gs://roversellers_cloudbuild/source/1768226777.079049-33b325588f7649deb4ae4e8f01503dcf.tgz#1768226795294519
+Copying gs://roversellers_cloudbuild/source/1768226777.079049-33b325588f7649deb4ae4e8f01503dcf.tgz#1768226795294519...
+/ [0 files][    0.0 B/ 11.7 MiB]                                                / [1 files][ 11.7 MiB/ 11.7 MiB]                                                
+Operation completed over 1 objects/11.7 MiB.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/gcb-internal
+Sending build context to Docker daemon  25.16MB
+Step 1/12 : FROM golang:1.24-alpine AS builder
+1.24-alpine: Pulling from library/golang
+1074353eec0d: Already exists
+380b1c214bdf: Pulling fs layer
+94cc3e02e353: Pulling fs layer
+6e3c40c40c61: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+6e3c40c40c61: Download complete
+380b1c214bdf: Verifying Checksum
+380b1c214bdf: Download complete
+380b1c214bdf: Pull complete
+94cc3e02e353: Verifying Checksum
+94cc3e02e353: Download complete
+94cc3e02e353: Pull complete
+6e3c40c40c61: Pull complete
+4f4fb700ef54: Pull complete
+Digest: sha256:ef75fa8822a4c0fb53a390548b3dc1c39639339ec3373c58f5441117e1ff46ae
+Status: Downloaded newer image for golang:1.24-alpine
+ ---> aa084a39ff8e
+Step 2/12 : WORKDIR /app
+ ---> Running in f819a9cc8f3c
+Removing intermediate container f819a9cc8f3c
+ ---> 9b01f831b0fc
+Step 3/12 : COPY go.mod ./
+ ---> 1a55d73c2225
+Step 4/12 : RUN go mod download
+ ---> Running in 5718fe9d5130
+Removing intermediate container 5718fe9d5130
+ ---> 8e881bb3d0de
+Step 5/12 : COPY . .
+ ---> a8a157955400
+Step 6/12 : RUN CGO_ENABLED=0 GOOS=linux go build -o bin/user-service ./cmd/main.go
+ ---> Running in f5ea3c4e9df8
+Removing intermediate container f5ea3c4e9df8
+ ---> efcad2862752
+Step 7/12 : FROM alpine:latest
+latest: Pulling from library/alpine
+Digest: sha256:865b95f46d98cf867a156fe4a135ad3fe50d2056aa3f25ed31662dff6da4eb62
+Status: Downloaded newer image for alpine:latest
+ ---> e7b39c54cdec
+Step 8/12 : RUN apk --no-cache add ca-certificates
+ ---> Running in 42352215870b
+(1/1) Installing ca-certificates (20251003-r0)
+Executing busybox-1.37.0-r30.trigger
+Executing ca-certificates-20251003-r0.trigger
+OK: 8473 KiB in 17 packages
+Removing intermediate container 42352215870b
+ ---> abc6034578d3
+Step 9/12 : WORKDIR /root/
+ ---> Running in 0f682a1e3f8f
+Removing intermediate container 0f682a1e3f8f
+ ---> a2664746e424
+Step 10/12 : COPY --from=builder /app/bin/user-service .
+ ---> bc1deac3938c
+Step 11/12 : EXPOSE 50051
+ ---> Running in c0a20f275947
+Removing intermediate container c0a20f275947
+ ---> fbf4ee704722
+Step 12/12 : CMD ["./user-service"]
+ ---> Running in c3eff3ca79b2
+Removing intermediate container c3eff3ca79b2
+ ---> 26cc2201af44
+Successfully built 26cc2201af44
+Successfully tagged gcr.io/roversellers/user-service:latest
+PUSH
+Pushing gcr.io/roversellers/user-service
+The push refers to repository [gcr.io/roversellers/user-service]
+4e686f041156: Preparing
+0d7df8c17847: Preparing
+7bb20cf5ef67: Preparing
+7bb20cf5ef67: Layer already exists
+0d7df8c17847: Pushed
+4e686f041156: Pushed
+latest: digest: sha256:7f3fa3698c255ab7a717d13aafb2c8b2c08895eca880dabcfa27ccf82da5064a size: 950
+DONE
+------------------------------------------------------------------------------
+ID                                    CREATE_TIME                DURATION  SOURCE                                                                                      IMAGES                                      STATUS
+ab0743e3-9760-45ec-a5ad-01093ede08d5  2026-01-12T14:06:36+00:00  1M59S     gs://roversellers_cloudbuild/source/1768226777.079049-33b325588f7649deb4ae4e8f01503dcf.tgz  gcr.io/roversellers/user-service (+1 more)  SUCCESS
+[0;32m✅ user-service deployed: [0m
+- Product Service: [1;33m📦 Building and deploying product-service...[0m
+---------------------------- REMOTE BUILD OUTPUT -----------------------------
+starting build "8f4ecc04-aa4e-444b-a10d-53e483e49096"
+
+FETCHSOURCE
+Fetching storage object: gs://roversellers_cloudbuild/source/1768226939.990889-b7739a5e326f4a02bd86409e3bfd649f.tgz#1768226958701726
+Copying gs://roversellers_cloudbuild/source/1768226939.990889-b7739a5e326f4a02bd86409e3bfd649f.tgz#1768226958701726...
+/ [0 files][    0.0 B/ 11.6 MiB]                                                / [1 files][ 11.6 MiB/ 11.6 MiB]                                                
+Operation completed over 1 objects/11.6 MiB.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/gcb-internal
+Sending build context to Docker daemon  25.12MB
+Step 1/12 : FROM golang:1.24-alpine AS builder
+1.24-alpine: Pulling from library/golang
+1074353eec0d: Already exists
+380b1c214bdf: Pulling fs layer
+94cc3e02e353: Pulling fs layer
+6e3c40c40c61: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+6e3c40c40c61: Verifying Checksum
+6e3c40c40c61: Download complete
+380b1c214bdf: Verifying Checksum
+380b1c214bdf: Download complete
+380b1c214bdf: Pull complete
+94cc3e02e353: Verifying Checksum
+94cc3e02e353: Download complete
+94cc3e02e353: Pull complete
+6e3c40c40c61: Pull complete
+4f4fb700ef54: Pull complete
+Digest: sha256:ef75fa8822a4c0fb53a390548b3dc1c39639339ec3373c58f5441117e1ff46ae
+Status: Downloaded newer image for golang:1.24-alpine
+ ---> aa084a39ff8e
+Step 2/12 : WORKDIR /app
+ ---> Running in ac4b16a2a32e
+Removing intermediate container ac4b16a2a32e
+ ---> 2498aeb71023
+Step 3/12 : COPY go.mod ./
+ ---> 8aabd6aef82a
+Step 4/12 : RUN go mod download
+ ---> Running in 6721db1790ce
+Removing intermediate container 6721db1790ce
+ ---> 0996654674d9
+Step 5/12 : COPY . .
+ ---> e9009ab8c6ce
+Step 6/12 : RUN CGO_ENABLED=0 GOOS=linux go build -o bin/product-service ./cmd/main.go
+ ---> Running in 7915301b2bee
+[91m# jumia-clone-backend/services/product-service/proto
+proto/product_grpc.pb.go:19:16: undefined: grpc.SupportPackageIsVersion9
+proto/product_grpc.pb.go:59:41: undefined: grpc.StaticMethod
+proto/product_grpc.pb.go:69:41: undefined: grpc.StaticMethod
+proto/product_grpc.pb.go:79:41: undefined: grpc.StaticMethod
+proto/product_grpc.pb.go:89:41: undefined: grpc.StaticMethod
+proto/product_grpc.pb.go:99:41: undefined: grpc.StaticMethod
+proto/product_grpc.pb.go:109:41: undefined: grpc.StaticMethod
+proto/product_grpc.pb.go:119:41: undefined: grpc.StaticMethod
+proto/product_grpc.pb.go:129:41: undefined: grpc.StaticMethod
+proto/product_grpc.pb.go:139:41: undefined: grpc.StaticMethod
+proto/product_grpc.pb.go:139:41: too many errors
+The command '/bin/sh -c CGO_ENABLED=0 GOOS=linux go build -o bin/product-service ./cmd/main.go' returned a non-zero code: 1
+ERROR
+ERROR: build step 0 "gcr.io/cloud-builders/gcb-internal" failed: step exited with non-zero status: 1
+[0m
+------------------------------------------------------------------------------
+[0;32m✅ product-service deployed: [0m
+- Cart Service: [1;33m📦 Building and deploying cart-service...[0m
+---------------------------- REMOTE BUILD OUTPUT -----------------------------
+starting build "c6968602-5709-4334-b908-893f3f3a362f"
+
+FETCHSOURCE
+Fetching storage object: gs://roversellers_cloudbuild/source/1768227045.299428-62f3e57c1bde4e7aa4b4d77f6fdf252d.tgz#1768227061084393
+Copying gs://roversellers_cloudbuild/source/1768227045.299428-62f3e57c1bde4e7aa4b4d77f6fdf252d.tgz#1768227061084393...
+/ [0 files][    0.0 B/ 11.6 MiB]                                                / [1 files][ 11.6 MiB/ 11.6 MiB]                                                
+Operation completed over 1 objects/11.6 MiB.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/gcb-internal
+Sending build context to Docker daemon  24.93MB
+Step 1/12 : FROM golang:1.24-alpine AS builder
+1.24-alpine: Pulling from library/golang
+1074353eec0d: Already exists
+380b1c214bdf: Pulling fs layer
+94cc3e02e353: Pulling fs layer
+6e3c40c40c61: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+4f4fb700ef54: Download complete
+6e3c40c40c61: Verifying Checksum
+6e3c40c40c61: Download complete
+380b1c214bdf: Verifying Checksum
+380b1c214bdf: Download complete
+380b1c214bdf: Pull complete
+94cc3e02e353: Verifying Checksum
+94cc3e02e353: Download complete
+94cc3e02e353: Pull complete
+6e3c40c40c61: Pull complete
+4f4fb700ef54: Pull complete
+Digest: sha256:ef75fa8822a4c0fb53a390548b3dc1c39639339ec3373c58f5441117e1ff46ae
+Status: Downloaded newer image for golang:1.24-alpine
+ ---> aa084a39ff8e
+Step 2/12 : WORKDIR /app
+ ---> Running in 970885cf6b6f
+Removing intermediate container 970885cf6b6f
+ ---> a36285c470d6
+Step 3/12 : COPY go.mod ./
+ ---> 3bc0440c3910
+Step 4/12 : RUN go mod download
+ ---> Running in c0f80cf7ad8b
+Removing intermediate container c0f80cf7ad8b
+ ---> 5179f97b27a2
+Step 5/12 : COPY . .
+ ---> e16dfdd85639
+Step 6/12 : RUN CGO_ENABLED=0 GOOS=linux go build -o bin/cart-service ./cmd/main.go
+ ---> Running in 862795c29a15
+[91minternal/models/cart.go:6:2: missing go.sum entry for module providing package github.com/google/uuid (imported by jumia-clone-backend/services/cart-service/internal/models); to add:
+	go get jumia-clone-backend/services/cart-service/internal/models
+The command '/bin/sh -c CGO_ENABLED=0 GOOS=linux go build -o bin/cart-service ./cmd/main.go' returned a non-zero code: 1
+ERROR
+ERROR: build step 0 "gcr.io/cloud-builders/gcb-internal" failed: step exited with non-zero status: 1
+[0m
+------------------------------------------------------------------------------
+[0;32m✅ cart-service deployed: [0m
+- Order Service: [1;33m📦 Building and deploying order-service...[0m
+---------------------------- REMOTE BUILD OUTPUT -----------------------------
+starting build "7d6ea20d-3ac6-46cb-afc2-200e20a4fe24"
+
+FETCHSOURCE
+Fetching storage object: gs://roversellers_cloudbuild/source/1768227126.745404-fcf20f1e0d204913abcb28feb216202e.tgz#1768227143884170
+Copying gs://roversellers_cloudbuild/source/1768227126.745404-fcf20f1e0d204913abcb28feb216202e.tgz#1768227143884170...
+/ [0 files][    0.0 B/ 11.6 MiB]                                                / [1 files][ 11.6 MiB/ 11.6 MiB]                                                
+Operation completed over 1 objects/11.6 MiB.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/gcb-internal
+Sending build context to Docker daemon  24.95MB
+Step 1/12 : FROM golang:1.24-alpine AS builder
+1.24-alpine: Pulling from library/golang
+1074353eec0d: Already exists
+380b1c214bdf: Pulling fs layer
+94cc3e02e353: Pulling fs layer
+6e3c40c40c61: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+6e3c40c40c61: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+380b1c214bdf: Verifying Checksum
+380b1c214bdf: Download complete
+380b1c214bdf: Pull complete
+94cc3e02e353: Verifying Checksum
+94cc3e02e353: Download complete
+94cc3e02e353: Pull complete
+6e3c40c40c61: Pull complete
+4f4fb700ef54: Pull complete
+Digest: sha256:ef75fa8822a4c0fb53a390548b3dc1c39639339ec3373c58f5441117e1ff46ae
+Status: Downloaded newer image for golang:1.24-alpine
+ ---> aa084a39ff8e
+Step 2/12 : WORKDIR /app
+ ---> Running in 75f6a74e2cb2
+Removing intermediate container 75f6a74e2cb2
+ ---> 63e593290047
+Step 3/12 : COPY go.mod ./
+ ---> 1ccd4118976e
+Step 4/12 : RUN go mod download
+ ---> Running in ccf95dac0cc7
+Removing intermediate container ccf95dac0cc7
+ ---> 164a84a25980
+Step 5/12 : COPY . .
+ ---> 0b489a8d312f
+Step 6/12 : RUN CGO_ENABLED=0 GOOS=linux go build -o bin/order-service ./cmd/main.go
+ ---> Running in 7572d5ce56c2
+[91mcmd/main.go:7:2: missing go.sum entry for module providing package google.golang.org/grpc; to add:
+	go mod download google.golang.org/grpc
+proto/order_grpc.pb.go:12:2: missing go.sum entry for module providing package google.golang.org/grpc/codes (imported by jumia-clone-backend/services/order-service/proto); to add:
+	go get jumia-clone-backend/services/order-service/proto
+proto/order_grpc.pb.go:13:2: missing go.sum entry for module providing package google.golang.org/grpc/status (imported by jumia-clone-backend/services/order-service/proto); to add:
+	go get jumia-clone-backend/services/order-service/proto
+proto/order.pb.go:10:2: missing go.sum entry for module providing package google.golang.org/protobuf/reflect/protoreflect (imported by jumia-clone-backend/services/order-service/proto); to add:
+	go get jumia-clone-backend/services/order-service/proto
+proto/order.pb.go:11:2: missing go.sum entry for module providing package google.golang.org/protobuf/runtime/protoimpl (imported by jumia-clone-backend/services/order-service/proto); to add:
+	go get jumia-clone-backend/services/order-service/proto
+The command '/bin/sh -c CGO_ENABLED=0 GOOS=linux go build -o bin/order-service ./cmd/main.go' returned a non-zero code: 1
+ERROR
+ERROR: build step 0 "gcr.io/cloud-builders/gcb-internal" failed: step exited with non-zero status: 1
+[0m
+------------------------------------------------------------------------------
+[0;32m✅ order-service deployed: [0m
+- API Gateway: [1;33m📦 Building and deploying api-gateway...[0m
+---------------------------- REMOTE BUILD OUTPUT -----------------------------
+starting build "5d85f0fd-3d29-4785-840d-be8935b2de6b"
+
+FETCHSOURCE
+Fetching storage object: gs://roversellers_cloudbuild/source/1768227209.775497-f91fbfd11907473aab1fac36c6b21395.tgz#1768227225963997
+Copying gs://roversellers_cloudbuild/source/1768227209.775497-f91fbfd11907473aab1fac36c6b21395.tgz#1768227225963997...
+/ [0 files][    0.0 B/ 11.2 MiB]                                                / [1 files][ 11.2 MiB/ 11.2 MiB]                                                
+Operation completed over 1 objects/11.2 MiB.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/gcb-internal
+Sending build context to Docker daemon  22.86MB
+Step 1/12 : FROM golang:1.24-alpine AS builder
+1.24-alpine: Pulling from library/golang
+1074353eec0d: Already exists
+380b1c214bdf: Pulling fs layer
+94cc3e02e353: Pulling fs layer
+6e3c40c40c61: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+380b1c214bdf: Verifying Checksum
+380b1c214bdf: Download complete
+6e3c40c40c61: Verifying Checksum
+6e3c40c40c61: Download complete
+380b1c214bdf: Pull complete
+94cc3e02e353: Verifying Checksum
+94cc3e02e353: Download complete
+94cc3e02e353: Pull complete
+6e3c40c40c61: Pull complete
+4f4fb700ef54: Pull complete
+Digest: sha256:ef75fa8822a4c0fb53a390548b3dc1c39639339ec3373c58f5441117e1ff46ae
+Status: Downloaded newer image for golang:1.24-alpine
+ ---> aa084a39ff8e
+Step 2/12 : WORKDIR /app
+ ---> Running in 2e9fd44e09f4
+Removing intermediate container 2e9fd44e09f4
+ ---> 8a02b847b389
+Step 3/12 : COPY go.mod ./
+ ---> 522b9efdfdcf
+Step 4/12 : RUN go mod download
+ ---> Running in 625a7fbc397e
+Removing intermediate container 625a7fbc397e
+ ---> 22199d469699
+Step 5/12 : COPY . .
+ ---> d46f371ec21b
+Step 6/12 : RUN CGO_ENABLED=0 GOOS=linux go build -o bin/api-gateway ./cmd/main.go
+ ---> Running in e01fde52df21
+[91m# jumia-clone-backend/api-gateway/internal/client
+internal/client/cart_client.go:13:20: undefined: grpc.NewClient
+internal/client/order_client.go:13:20: undefined: grpc.NewClient
+internal/client/product_client.go:13:20: undefined: grpc.NewClient
+[0m[91m# jumia-clone-backend/api-gateway/proto
+proto/cart_grpc.pb.go:19:16: undefined: grpc.SupportPackageIsVersion9
+proto/cart_grpc.pb.go:49:41: undefined: grpc.StaticMethod
+proto/cart_grpc.pb.go:59:41: undefined: grpc.StaticMethod
+proto/cart_grpc.pb.go:69:41: undefined: grpc.StaticMethod
+proto/cart_grpc.pb.go:79:41: undefined: grpc.StaticMethod
+proto/cart_grpc.pb.go:89:41: undefined: grpc.StaticMethod
+proto/order_grpc.pb.go:19:16: undefined: grpc.SupportPackageIsVersion9
+proto/order_grpc.pb.go:49:41: undefined: grpc.StaticMethod
+proto/product_grpc.pb.go:19:16: undefined: grpc.SupportPackageIsVersion9
+proto/user_grpc.pb.go:19:16: undefined: grpc.SupportPackageIsVersion9
+proto/order_grpc.pb.go:49:41: too many errors
+The command '/bin/sh -c CGO_ENABLED=0 GOOS=linux go build -o bin/api-gateway ./cmd/main.go' returned a non-zero code: 1
+ERROR
+ERROR: build step 0 "gcr.io/cloud-builders/gcb-internal" failed: step exited with non-zero status: 1
+[0m
+------------------------------------------------------------------------------
+[0;32m✅ api-gateway deployed: [0m
+
+Frontend .env update:
+VITE_API_BASE_URL=[1;33m📦 Building and deploying api-gateway...[0m
+---------------------------- REMOTE BUILD OUTPUT -----------------------------
+starting build "5d85f0fd-3d29-4785-840d-be8935b2de6b"
+
+FETCHSOURCE
+Fetching storage object: gs://roversellers_cloudbuild/source/1768227209.775497-f91fbfd11907473aab1fac36c6b21395.tgz#1768227225963997
+Copying gs://roversellers_cloudbuild/source/1768227209.775497-f91fbfd11907473aab1fac36c6b21395.tgz#1768227225963997...
+/ [0 files][    0.0 B/ 11.2 MiB]                                                / [1 files][ 11.2 MiB/ 11.2 MiB]                                                
+Operation completed over 1 objects/11.2 MiB.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/gcb-internal
+Sending build context to Docker daemon  22.86MB
+Step 1/12 : FROM golang:1.24-alpine AS builder
+1.24-alpine: Pulling from library/golang
+1074353eec0d: Already exists
+380b1c214bdf: Pulling fs layer
+94cc3e02e353: Pulling fs layer
+6e3c40c40c61: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+380b1c214bdf: Verifying Checksum
+380b1c214bdf: Download complete
+6e3c40c40c61: Verifying Checksum
+6e3c40c40c61: Download complete
+380b1c214bdf: Pull complete
+94cc3e02e353: Verifying Checksum
+94cc3e02e353: Download complete
+94cc3e02e353: Pull complete
+6e3c40c40c61: Pull complete
+4f4fb700ef54: Pull complete
+Digest: sha256:ef75fa8822a4c0fb53a390548b3dc1c39639339ec3373c58f5441117e1ff46ae
+Status: Downloaded newer image for golang:1.24-alpine
+ ---> aa084a39ff8e
+Step 2/12 : WORKDIR /app
+ ---> Running in 2e9fd44e09f4
+Removing intermediate container 2e9fd44e09f4
+ ---> 8a02b847b389
+Step 3/12 : COPY go.mod ./
+ ---> 522b9efdfdcf
+Step 4/12 : RUN go mod download
+ ---> Running in 625a7fbc397e
+Removing intermediate container 625a7fbc397e
+ ---> 22199d469699
+Step 5/12 : COPY . .
+ ---> d46f371ec21b
+Step 6/12 : RUN CGO_ENABLED=0 GOOS=linux go build -o bin/api-gateway ./cmd/main.go
+ ---> Running in e01fde52df21
+[91m# jumia-clone-backend/api-gateway/internal/client
+internal/client/cart_client.go:13:20: undefined: grpc.NewClient
+internal/client/order_client.go:13:20: undefined: grpc.NewClient
+internal/client/product_client.go:13:20: undefined: grpc.NewClient
+[0m[91m# jumia-clone-backend/api-gateway/proto
+proto/cart_grpc.pb.go:19:16: undefined: grpc.SupportPackageIsVersion9
+proto/cart_grpc.pb.go:49:41: undefined: grpc.StaticMethod
+proto/cart_grpc.pb.go:59:41: undefined: grpc.StaticMethod
+proto/cart_grpc.pb.go:69:41: undefined: grpc.StaticMethod
+proto/cart_grpc.pb.go:79:41: undefined: grpc.StaticMethod
+proto/cart_grpc.pb.go:89:41: undefined: grpc.StaticMethod
+proto/order_grpc.pb.go:19:16: undefined: grpc.SupportPackageIsVersion9
+proto/order_grpc.pb.go:49:41: undefined: grpc.StaticMethod
+proto/product_grpc.pb.go:19:16: undefined: grpc.SupportPackageIsVersion9
+proto/user_grpc.pb.go:19:16: undefined: grpc.SupportPackageIsVersion9
+proto/order_grpc.pb.go:49:41: too many errors
+The command '/bin/sh -c CGO_ENABLED=0 GOOS=linux go build -o bin/api-gateway ./cmd/main.go' returned a non-zero code: 1
+ERROR
+ERROR: build step 0 "gcr.io/cloud-builders/gcb-internal" failed: step exited with non-zero status: 1
+[0m
+------------------------------------------------------------------------------
+[0;32m✅ api-gateway deployed: [0m
