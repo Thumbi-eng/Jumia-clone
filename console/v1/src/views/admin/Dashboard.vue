@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-h5 font-weight-regular mb-6">Dashboard</h1>
+    <h1 class="text-h5 font-weight-regular mb-6 mt-6">Dashboard</h1>
 
     <!-- Stats Cards -->
     <v-row class="mb-6">

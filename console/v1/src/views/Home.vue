@@ -3,6 +3,7 @@
     <TopBanner />
     <FlashSalesRow />
     <TopDealsRow />
+    <AllProductsRow />
     <BottomSEOSection />
   </v-row>
 </template>
@@ -12,4 +13,5 @@ import BottomSEOSection from "@/components/bottom/BottomSEOSection.vue";
 import FlashSalesRow from "@/components/FlashSalesRow.vue";
 import TopBanner from "@/components/TopBanner.vue";
 import TopDealsRow from "@/components/TopDealsRow.vue";
+import AllProductsRow from "@/components/AllProductsRow.vue";
 </script>

@@ -1,8 +1,8 @@
 <template>
-  <v-container fluid class="pa-0 bg-grey-lighten-4">
-    <v-row class="ma-0" style="max-width: 1550px; margin: 0 auto !important">
+  <v-container fluid class="pa-0 bg-grey-lighten-4 mt-8">
+    <v-row class="ma-0 mt-8 " style="max-width: 1550px; margin: 0 auto !important">
       <!-- Sidebar Navigation -->
-      <v-col cols="12" md="3" class="pa-4">
+      <v-col cols="12" md="3" class="pa-4 mt-5 mb-8">
         <v-card elevation="0" class="pa-0">
           <v-list-item class="px-4 py-3 bg-orange">
             <v-list-item-title class="text-white font-weight-medium">
