@@ -5,7 +5,8 @@ const API_BASE = 'http://localhost:8080/api/v1'
 
 export const useAuthStore = defineStore('auth', () => {
   // State
-  const user = ref(null)
+  const storedUser = localStorage.getItem('user')
+  const user = ref(storedUser ? JSON.parse(storedUser) : null)
   const accessToken = ref(localStorage.getItem('access_token') || null)
   const refreshToken = ref(localStorage.getItem('refresh_token') || null)
   const loading = ref(false)
@@ -57,10 +58,15 @@ export const useAuthStore = defineStore('auth', () => {
 
       // Store tokens in localStorage
       localStorage.setItem('access_token', accessToken.value)
-      localStorage.setItem('refresh_token', data.refresh_token)
+      if (data.refresh_token) {
+        localStorage.setItem('refresh_token', data.refresh_token)
+      }
 
       // Set user data
       user.value = data.user
+
+      // Store user in localStorage
+      localStorage.setItem('user', JSON.stringify(data.user))
 
       return data
     } catch (err) {
@@ -98,10 +104,15 @@ export const useAuthStore = defineStore('auth', () => {
 
       // Store tokens in localStorage
       localStorage.setItem('access_token', accessToken.value)
-      localStorage.setItem('refresh_token', data.refresh_token)
+      if (data.refresh_token) {
+        localStorage.setItem('refresh_token', data.refresh_token)
+      }
 
       // Set user data
       user.value = data.user
+
+      // Store user in localStorage
+      localStorage.setItem('user', JSON.stringify(data.user))
 
       return data
     } catch (err) {
@@ -140,13 +151,18 @@ export const useAuthStore = defineStore('auth', () => {
       const data = await response.json()
       user.value = data.user
 
+      // Update user in localStorage
+      localStorage.setItem('user', JSON.stringify(data.user))
+
       return data.user
     } catch (err) {
       error.value = err.message
       console.error('Fetch user error:', err)
-      // If fetch fails, clear auth
-      logout()
-      return null
+      // Don't logout if user data exists in localStorage (offline mode)
+      if (!user.value) {
+        logout()
+      }
+      return user.value
     } finally {
       loading.value = false
     }
@@ -172,6 +188,9 @@ export const useAuthStore = defineStore('auth', () => {
 
       if (!response.ok) {
         const data = await response.json()
+
+      // Update user in localStorage
+      localStorage.setItem('user', JSON.stringify(data.user))
         throw new Error(data.error || data.message || 'Update failed')
       }
 
@@ -235,6 +254,7 @@ export const useAuthStore = defineStore('auth', () => {
     refreshToken.value = null
     error.value = null
 
+    localStorage.removeItem('user')
     // Clear localStorage
     localStorage.removeItem('access_token')
     localStorage.removeItem('refresh_token')
@@ -245,7 +265,8 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // Initialize auth state on store creation
-  if (accessToken.value) {
+  // Only fetch fresh user data if we have a token but no cached user
+  if (accessToken.value && !user.value) {
     fetchUser()
   }
 

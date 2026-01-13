@@ -117,9 +117,23 @@
               color="orange"
               variant="flat"
               :loading="authStore.loading"
-              class="mb-4"
+              class="mb-3"
             >
               Sign In
+            </v-btn>
+
+            <!-- Demo Login Button -->
+            <v-btn
+              variant="outlined"
+              color="orange"
+              size="large"
+              block
+              :loading="demoLoading"
+              @click="handleDemoLogin"
+              class="mb-4"
+            >
+              <v-icon class="mr-2">mdi-test-tube</v-icon>
+              Demo Login (No Backend Required)
             </v-btn>
 
             <!-- Divider -->
@@ -218,7 +232,7 @@
             :disabled="resetSuccess"
             @click="handleResetPassword"
           >
-            {{ resetSuccess ? 'Email Sent' : 'Send Reset Link' }}
+            {{ resetSuccess ? "Email Sent" : "Send Reset Link" }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -240,6 +254,7 @@ const email = ref("");
 const password = ref("");
 const showPassword = ref(false);
 const rememberMe = ref(false);
+const demoLoading = ref(false);
 
 // Forgot password
 const forgotPasswordDialog = ref(false);
@@ -278,6 +293,46 @@ async function handleLogin() {
   }
 }
 
+async function handleDemoLogin() {
+  demoLoading.value = true;
+
+  try {
+    // Simulate demo login without backend
+    const demoUser = {
+      id: "demo-user-123",
+      email: "demo@jumia.com",
+      first_name: "Demo",
+      last_name: "User",
+      phone: "+254712345678",
+      role: "customer",
+      is_admin: false,
+      created_at: new Date().toISOString(),
+    };
+
+    const demoToken = "demo-token-" + Date.now();
+
+    // Manually set auth state
+    authStore.user = demoUser;
+    authStore.accessToken = demoToken;
+
+    // Store in localStorage
+    localStorage.setItem("user", JSON.stringify(demoUser));
+    localStorage.setItem("access_token", demoToken);
+
+    // Clear any errors
+    authStore.clearError();
+
+    // Redirect to home
+    setTimeout(() => {
+      router.push("/");
+    }, 500);
+  } catch (err) {
+    console.error("Demo login failed:", err);
+  } finally {
+    demoLoading.value = false;
+  }
+}
+
 async function handleResetPassword() {
   const { valid } = await resetForm.value.validate();
 
@@ -310,8 +365,7 @@ async function handleResetPassword() {
         resetError.value = "Invalid email address.";
         break;
       case "auth/too-many-requests":
-        resetError.value =
-          "Too many requests. Please try again later.";
+        resetError.value = "Too many requests. Please try again later.";
         break;
       default:
         resetError.value = err.message || "Failed to send reset email.";
