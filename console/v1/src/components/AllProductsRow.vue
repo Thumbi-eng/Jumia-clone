@@ -219,7 +219,7 @@ const getFinalPrice = (product) => {
 };
 
 const isInStock = (product) => {
-  return product.stock > 0 && product.is_active;
+  return product.stock > 0 
 };
 
 const getProductImage = (product) => {
